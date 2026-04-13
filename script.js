@@ -93,22 +93,16 @@ if (leadForm) {
   });
 }
 
-// ============================================
-// CONTACT FORM (chips + validation)
-// ============================================
-const contactForm = document.getElementById('contact-form');
-if (contactForm) {
-  const desc = contactForm.querySelector('#cf-desc');
-  contactForm.querySelectorAll('.chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      desc.value = chip.dataset.text || chip.textContent;
-      desc.focus();
-    });
-  });
+// Contact form is now handled by components/loader.js
 
-  contactForm.addEventListener('submit', (e) => {
+// ============================================
+// APPORT D'AFFAIRES FORM
+// ============================================
+const apportForm = document.getElementById('apport-form');
+if (apportForm) {
+  apportForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const fields = contactForm.querySelectorAll('input[required], textarea[required]');
+    const fields = apportForm.querySelectorAll('input[required], textarea[required]');
     let ok = true;
     fields.forEach(f => {
       const val = f.value.trim();
@@ -123,8 +117,8 @@ if (contactForm) {
 
     const success = document.createElement('div');
     success.className = 'form-success';
-    success.textContent = '✓ Merci ! Votre demande a bien été envoyée. Je vous recontacte sous 24h.';
-    contactForm.replaceWith(success);
+    success.textContent = '✓ Déclaration envoyée ! Je reviens vers vous sous 24h pour finaliser votre apport d\'affaires.';
+    apportForm.replaceWith(success);
   });
 }
 
