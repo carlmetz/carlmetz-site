@@ -1,0 +1,38 @@
+      <form id="contact-form" class="contact-form" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="cf-nom">Nom <span class="req">*</span></label>
+            <input type="text" id="cf-nom" name="nom" placeholder="Votre nom" required>
+          </div>
+          <div class="field">
+            <label for="cf-prenom">Pr&eacute;nom <span class="req">*</span></label>
+            <input type="text" id="cf-prenom" name="prenom" placeholder="Votre pr&eacute;nom" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="cf-email">Email <span class="req">*</span></label>
+            <input type="email" id="cf-email" name="email" placeholder="votre@email.fr" required>
+          </div>
+          <div class="field">
+            <label for="cf-tel">Num&eacute;ro de t&eacute;l&eacute;phone <span class="req">*</span></label>
+            <input type="tel" id="cf-tel" name="telephone" placeholder="+33 6 12 34 56 78" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="cf-entreprise">Entreprise</label>
+          <input type="text" id="cf-entreprise" name="entreprise" placeholder="Nom de votre entreprise">
+        </div>
+        <div class="field">
+          <label for="cf-desc">Description de votre projet <span class="req">*</span></label>
+          <div class="textarea-wrap">
+            <div class="textarea-chips" id="textareaChips">
+              <button type="button" class="chip" data-text="Je souhaiterais mettre en place HubSpot pour mon entreprise">Je souhaiterais mettre en place HubSpot pour mon entreprise</button>
+              <button type="button" class="chip" data-text="J'ai un compte HubSpot, je souhaiterais l'optimiser et le structurer">J'ai un compte HubSpot, je souhaiterais l'optimiser et le structurer</button>
+              <button type="button" class="chip" data-text="Je souhaiterais automatiser certains process internes de mon entreprise">Je souhaiterais automatiser certains process internes</button>
+            </div>
+            <textarea id="cf-desc" name="description" rows="5" placeholder="" required></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Envoyer ma demande &rarr;</button>
+      </form>
