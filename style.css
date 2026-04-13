@@ -563,15 +563,7 @@ h1, h2, h3 {
 .btn-white:hover {
   background: #333;
 }
-@media (max-width: 768px) {
-  .catalogue-block {
-    max-width: 100%;
-    padding: 32px 24px;
-  }
-  .catalogue-content {
-    grid-template-columns: 1fr;
-  }
-}
+/* catalogue responsive handled in main responsive block below */
 
 .presta-visual--plain {
   background: #FDFBF8;
@@ -1868,96 +1860,223 @@ footer ul li a:hover { color: #0a0a0a; }
 }
 
 /* ============================================
-   RESPONSIVE
+   RESPONSIVE — TABLET (≤1024px)
+   ============================================ */
+@media (max-width: 1024px) {
+  .container { padding: 0 32px; }
+  .header-inner { padding: 0 32px; }
+  .section { padding: 80px 0; }
+
+  .hero h1 { font-size: 38px; }
+  .section-title { font-size: 36px; }
+  .section-title.centered { font-size: 36px; }
+
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .deliverables-grid { grid-template-columns: repeat(2, 1fr); }
+  .proof-metrics { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+
+  .presta-block { gap: 48px; }
+
+  .about-grid { grid-template-columns: 20% 80%; gap: 40px; }
+
+  .catalogue-block { max-width: 95%; padding: 36px 32px; }
+
+  .superpower-block { flex-direction: column; align-items: flex-start; }
+  .superpower-block .btn { align-self: flex-start; }
+
+  .agent-card { width: 280px; }
+
+  .nav-desktop { gap: 24px; }
+  .nav-desktop a { font-size: 13px; }
+}
+
+/* ============================================
+   RESPONSIVE — MOBILE (≤768px)
    ============================================ */
 @media (max-width: 768px) {
-  .container { padding: 0 24px; }
-  .header-inner { padding: 0 24px; }
+  .container { padding: 0 20px; }
+  .header-inner { padding: 0 20px; }
+  .nav-mobile { padding: 24px 20px 32px; }
   .section { padding: 64px 0; }
 
   .nav-desktop { display: none; }
   .nav-toggle { display: flex; }
 
+  /* Hero */
   .hero { padding: 120px 0 60px; min-height: auto; }
+  .hero::before { width: 100%; height: 60%; filter: blur(60px); }
   .hero-centered { max-width: 100%; }
-  .hero h1 { font-size: 40px; }
-  .hero .lede { font-size: 16px; }
-  .hero-ctas { flex-direction: column; width: 100%; }
+  .hero h1 { font-size: 30px; margin-bottom: 20px; }
+  .hero .lede { font-size: 16px; margin-bottom: 28px; }
+  .hero-ctas { flex-direction: column; width: 100%; margin-bottom: 28px; }
   .hero-ctas .btn { width: 100%; text-align: center; }
-  .badges { gap: 14px; font-size: 12px; justify-content: center; }
+  .badges { gap: 12px; font-size: 12px; justify-content: center; flex-direction: column; align-items: center; }
+  .pill { font-size: 12px; }
 
+  /* Titles */
   .section-title,
-  .lead-left h2 { font-size: 32px; }
-  .final-title { font-size: 36px; }
-  .about-text h2 { font-size: 30px; }
+  .section-title.centered,
+  .lead-left h2 { font-size: 28px; }
+  .final-title { font-size: 30px; }
+  .about-text h2 { font-size: 26px; }
+  .agents-intro { font-size: 24px; }
+  .cases-title { font-size: 26px !important; white-space: normal !important; }
 
-  .solutions-grid { grid-template-columns: 1fr; gap: 64px; }
+  /* Solutions dark */
+  .solutions-grid { grid-template-columns: 1fr; gap: 48px; }
   .solutions-col { padding: 0; }
   .solutions-col + .solutions-col {
     border-left: none;
     border-top: 1px solid #1e1e1e;
-    padding-top: 64px;
+    padding-top: 48px;
   }
-  .solutions-title { font-size: 26px; }
+  .solutions-title { font-size: 24px; }
 
-  .lead-grid { grid-template-columns: 1fr; gap: 48px; }
-  .lead-card { padding: 28px; }
+  /* Lead */
+  .lead-grid { grid-template-columns: 1fr; gap: 40px; }
+  .lead-card { padding: 24px; }
 
+  /* Grids */
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-  .proof-metrics { grid-template-columns: repeat(2, 1fr); gap: 24px; }
-  .deliverables-grid { grid-template-columns: 1fr 1fr; }
-  .pillars { flex-direction: column; gap: 32px; }
-  .pillar { padding: 0; }
+  .deliverables-grid { grid-template-columns: 1fr; }
+  .proof-metrics { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+
+  /* Pillars */
+  .pillars { flex-direction: column; gap: 28px; }
+  .pillar { padding: 0; text-align: left; }
   .pillar-sep { width: 100%; height: 1px; }
-  .case-card { flex: 0 0 280px; }
+  .pillar-icon { margin-bottom: 12px; }
+
+  /* Cases */
+  .case-card { flex: 0 0 260px; }
+
+  /* About */
   .about-grid {
     grid-template-columns: 1fr;
-    gap: 48px;
+    gap: 32px;
+    text-align: center;
   }
+  .about-photo { order: -1; }
+  .about-photo .photo-frame { max-width: 150px; }
 
-  .metrics {
-    flex-direction: column;
-    gap: 48px;
-  }
+  /* Metrics */
+  .metrics { flex-direction: column; gap: 32px; }
   .metric {
     border-right: none;
     border-bottom: 1px solid #E8E0D0;
-    padding: 0 0 32px 0;
+    padding: 0 0 24px 0;
   }
   .metric:last-child { border-bottom: none; padding-bottom: 0; }
-  .metric-num { font-size: 44px; }
+  .metric-num { font-size: 40px; }
 
-  .logos-row { gap: 12px; }
-  .logo-placeholder { width: 100px; height: 36px; }
+  /* Logos */
+  .logos-row { gap: 10px; }
+  .logo-placeholder { width: 90px; height: 32px; }
 
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 36px;
-  }
+  /* Footer */
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
 
+  /* Buttons */
   .btn { width: 100%; text-align: center; }
   .btn-sm { width: auto; }
-  .reassurance { flex-direction: column; gap: 10px; }
 
-  .contact-form { padding: 24px; }
-  .form-row { grid-template-columns: 1fr; gap: 20px; }
+  /* Contact */
+  .reassurance { flex-direction: column; gap: 8px; align-items: center; }
+  .contact-form { padding: 20px; }
+  .form-row { grid-template-columns: 1fr; gap: 16px; }
+  #contact { scroll-margin-top: 40px; padding-top: 60px; }
+  #contact::before,
+  #contact::after { width: 60%; filter: blur(50px); }
 
+  /* Presta blocks */
   .presta-block {
     grid-template-columns: 1fr;
-    gap: 32px;
-    margin-bottom: 64px;
+    gap: 24px;
+    margin-bottom: 48px;
   }
+  .presta-block.reverse { grid-template-columns: 1fr; }
   .presta-block.reverse .presta-text { order: 0; }
   .presta-block.reverse .presta-visual { order: 0; }
-  .presta-text h3 { font-size: 26px; }
+  .presta-text h3 { font-size: 24px; }
+  .presta-text p { font-size: 15px; }
+  .presta-cards { margin-top: 40px; margin-bottom: 48px; }
   .visual-icon { font-size: 48px; }
 
+  /* Expertise cards */
+  .expertise-card { padding: 0 20px 20px; }
+  .expertise-card h3 { font-size: 32px; }
+  .expertise-visual { width: 90%; }
+
+  /* Superpower */
+  .superpower-block {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+    gap: 20px;
+  }
+  .superpower-block .btn { width: 100%; align-self: stretch; }
+
+  /* Catalogue */
+  .catalogue-block { max-width: 100%; padding: 28px 20px; }
+  .catalogue-content { grid-template-columns: 1fr; gap: 24px; }
+  .catalogue-visual { max-width: 200px; margin: 0 auto; }
+
+  /* Stack */
   .stack-grid { grid-template-columns: 1fr; }
 
+  /* Big intro */
   .big-intro { font-size: 16px; }
 
-  .commission-block { grid-template-columns: 1fr; gap: 40px; }
-  .commission-text h2 { font-size: 30px; }
-  .commission-num { font-size: 76px; }
-  .commission-card { padding: 40px 28px; }
+  /* Commission (apport affaires) */
+  .commission-block { grid-template-columns: 1fr; gap: 32px; }
+  .commission-text h2 { font-size: 28px; }
+  .commission-num { font-size: 64px; }
+  .commission-card { padding: 32px 24px; }
+
+  /* Offers */
+  .offer-card { padding: 28px; }
+  .price { font-size: 18px; }
+
+  /* Tools marquee */
+  .tools-track img { height: 28px; max-width: 100px; }
+  .tools-track { gap: 40px; }
+
+  /* Agent cards in carousel */
+  .agent-card { width: 260px; padding: 20px; }
+  .agent-card h4 { font-size: 16px; }
+}
+
+/* ============================================
+   RESPONSIVE — SMALL MOBILE (≤480px)
+   ============================================ */
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  .header-inner { padding: 0 16px; }
+  .nav-mobile { padding: 20px 16px 28px; }
+
+  .hero { padding: 100px 0 48px; }
+  .hero h1 { font-size: 26px; margin-bottom: 16px; }
+  .hero .lede { font-size: 15px; margin-bottom: 24px; }
+  .hero::before { opacity: 0.7; }
+
+  .section-title,
+  .section-title.centered { font-size: 24px; }
+  .final-title { font-size: 26px; }
+  .agents-intro { font-size: 22px; }
+
+  .presta-text h3 { font-size: 22px; }
+  .expertise-card h3 { font-size: 28px; }
+  .about-text h2 { font-size: 24px; }
+
+  .case-card { flex: 0 0 240px; }
+
+  .proof-metrics { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .proof-num { font-size: 32px; }
+
+  .contact-form { padding: 16px; gap: 14px; }
+  .chip { font-size: 10px; padding: 2px 5px; }
+
+  .catalogue-block h3 { font-size: 22px; }
+
+  .commission-num { font-size: 52px; }
 }
