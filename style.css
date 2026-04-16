@@ -195,14 +195,14 @@ h1, h2, h3 {
    ============================================ */
 .hero {
   position: relative;
-  min-height: 100vh;
+  min-height: 90vh;
   display: flex;
   align-items: center;
   padding: 140px 0 40px;
   overflow: hidden;
   isolation: isolate;
 }
-.hero + .section { padding-top: 60px; }
+.hero + .section { padding-top: 40px; }
 /* Colored gradient blobs concentrés au centre */
 .hero::before {
   content: "";
