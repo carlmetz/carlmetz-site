@@ -125,6 +125,14 @@
     return 'desktop';
   }
 
+  // Retourne le chemin racine du site (ex: "/" ou "/carlmetz-site/")
+  function getSiteBase() {
+    var path = window.location.pathname;
+    var m = path.match(/^(.*?)\/(accompagnement-crm|agents-ia|apport-affaires|merci)(\/|$)/);
+    if (m) return m[1] + '/';
+    return path.replace(/\/[^\/]*$/, '/') || '/';
+  }
+
   contactForm.addEventListener('submit', function (e) {
     e.preventDefault();
     var fields = contactForm.querySelectorAll('input[required], textarea[required]');
@@ -171,10 +179,10 @@
       body: JSON.stringify(payload)
     })
     .then(function () {
-      window.location.href = 'merci.html';
+      window.location.href = getSiteBase() + 'merci/';
     })
     .catch(function () {
-      window.location.href = 'merci.html';
+      window.location.href = getSiteBase() + 'merci/';
     });
   });
 
