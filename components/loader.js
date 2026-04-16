@@ -47,7 +47,7 @@
     '<button type="submit" class="btn btn-primary btn-lg btn-block">Envoyer ma demande \u2192</button>' +
   '</form>';
 
-  var contactSectionHTML = '<section id="contact" class="section section-alt reveal" style="padding-top: 130px;">' +
+  var contactSectionHTML = '<section id="contact" class="section section-alt reveal" style="padding-top: 60px;">' +
     '<div class="container narrow center">' +
       '<h2 class="final-title">Parlons de votre projet</h2>' +
       '<p class="lede">D\u00e9crivez votre besoin en quelques lignes. Je vous r\u00e9ponds sous 24h avec une premi\u00e8re analyse.</p>' +
