@@ -198,10 +198,11 @@ h1, h2, h3 {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 140px 0 80px;
+  padding: 140px 0 40px;
   overflow: hidden;
   isolation: isolate;
 }
+.hero + .section { padding-top: 60px; }
 /* Colored gradient blobs concentrés au centre */
 .hero::before {
   content: "";
@@ -278,7 +279,7 @@ h1, h2, h3 {
 .hero-ctas {
   display: flex;
   gap: 16px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
   justify-content: center;
 }
