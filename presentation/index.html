@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Présentation des services — Carl Metz</title>
+<meta name="description" content="Présentation interactive des services de Carl Metz : intégration CRM HubSpot, automatisations et agents IA.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="../Asset/favicon/favicon 162.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #0a0a0a;
+    --ink-soft: #4a4a4a;
+    --ink-mute: #8a8a8a;
+    --accent: #0a0a0a;
+    --warm: #7a6a52;
+    --cream: #FCF7F2;
+    --beige: #E8E0D0;
+    --line: #e6ddcc;
+    --canvas: #f7f1e6;
+  }
+  html, body { height: 100%; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    background: var(--canvas);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ============ TOOLBAR ============ */
+  .pv-bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 20px;
+    background: rgba(252,247,242,0.88);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid var(--beige);
+  }
+  .pv-tabs { display: flex; gap: 8px; align-items: center; }
+  .pv-brand {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin-right: 14px;
+    white-space: nowrap;
+    color: var(--ink);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .pv-brand:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .pv-tab {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 8px 16px;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .pv-tab:hover { background: #efe7d8; color: var(--ink); }
+  .pv-tab.active {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+  .pv-tab:disabled { color: #b4b0c4; cursor: not-allowed; }
+  .pv-tab:disabled:hover { background: transparent; color: #b4b0c4; }
+  .soon {
+    font-size: 9.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--warm);
+    background: #efe7d8;
+    padding: 2px 7px;
+    border-radius: 5px;
+  }
+  .pv-download {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    padding: 9px 18px;
+    border-radius: 9px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: filter 0.18s ease, transform 0.05s ease;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+  .pv-download:hover { filter: brightness(1.08); }
+  .pv-download:active { transform: translateY(1px); }
+  .pv-download svg { width: 16px; height: 16px; }
+
+  /* ============ ACTIONS BAR ============ */
+  .pv-actions {
+    padding: 22px 20px 0;
+    display: flex;
+    justify-content: center;
+  }
+  .pv-actions-inner {
+    width: 794px;
+    max-width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    align-items: center;
+  }
+  .pv-action-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    background: rgba(255,255,255,0.7);
+    border: 1px solid var(--beige);
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    text-decoration: none;
+    position: relative;
+    transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.05s ease;
+    white-space: nowrap;
+  }
+  .pv-action-btn:hover { background: #fff; border-color: var(--warm); }
+  .pv-action-btn:active { transform: translateY(1px); }
+  .pv-action-btn svg { width: 14px; height: 14px; transition: transform 0.25s ease; }
+  .pv-action-btn-primary {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+  .pv-action-btn-primary:hover { background: #2a2a2a; border-color: #2a2a2a; }
+
+  /* icon + label swap (copy → copied) */
+  .pv-action-btn .pv-ic-check { display: none; }
+  .pv-action-btn .pv-action-label--copied { display: none; }
+  .pv-action-btn.copied .pv-ic-default { display: none; }
+  .pv-action-btn.copied .pv-ic-check { display: inline-block; animation: pvCheckPop 0.32s ease; }
+  .pv-action-btn.copied .pv-action-label--default { display: none; }
+  .pv-action-btn.copied .pv-action-label--copied { display: inline; }
+  .pv-action-btn.copied {
+    background: #e6f4ec;
+    border-color: #4ea66b;
+    color: #2c6a48;
+  }
+  .pv-action-btn.copied:hover { background: #e6f4ec; border-color: #4ea66b; }
+  @keyframes pvCheckPop {
+    0%   { transform: scale(0.4); opacity: 0; }
+    60%  { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* ============ CANVAS ============ */
+  .pv-canvas {
+    padding: 22px 20px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+  .pv-section { display: flex; flex-direction: column; align-items: center; gap: 28px; width: 100%; }
+  .pv-section[hidden] { display: none; }
+
+  /* ============ DOCUMENT PAGE (A4) ============ */
+  .doc {
+    position: relative;
+    width: 794px;            /* A4 @96dpi */
+    min-height: 1123px;
+    background: #FEFCFA;
+    box-shadow: 0 12px 40px rgba(60,45,20,0.15), 0 2px 8px rgba(60,45,20,0.07);
+    border-radius: 6px;
+    padding: 60px 60px 52px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .doc::before {
+    content: "";
+    position: absolute;
+    top: -220px; right: -200px;
+    width: 540px; height: 540px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 40% 45%, rgba(255,205,150,0.38) 0%, transparent 62%),
+      radial-gradient(circle at 62% 60%, rgba(232,224,208,0.60) 0%, transparent 64%);
+    filter: blur(58px);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .doc > * { position: relative; z-index: 1; }
+
+  /* ============ CRM — one-pager sobre (consulting premium) ============ */
+  .doc-crm { padding: 54px 58px 42px; background: #FEFCFA; }
+  .doc-crm::before { opacity: 0.5; }
+  .doc-crm .doc-top { margin-bottom: 20px; }
+  .doc-crm .eyebrow { margin-bottom: 12px; }
+  .doc-crm h1 { font-size: 30px; line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 14px; }
+  .doc-crm .lede { font-size: 12.5px; line-height: 1.65; color: var(--ink-soft); max-width: 64ch; margin-bottom: 0; }
+
+  .crm-rule { border: 0; border-top: 1px solid var(--line); margin: 13px 0; }
+
+  .crm-intro { font-size: 14px; line-height: 1.7; color: var(--ink); max-width: 66ch; }
+  .crm-intro strong { font-weight: 600; }
+
+  .crm-sec-head { margin-bottom: 20px; }
+  .crm-sec-head h3 { font-family: 'Lora', serif; font-weight: 600; font-size: 19px; color: var(--ink); margin-bottom: 5px; letter-spacing: -0.01em; }
+  .crm-sec-head p { font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute); margin-top: 8px; }
+
+  .crm-cols { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .crm-col { padding: 0 22px; border-left: 1px solid var(--line); }
+  .crm-col:first-child { padding-left: 0; border-left: none; }
+  .crm-col:last-child { padding-right: 0; }
+  .crm-col h4 { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 8px; line-height: 1.3; }
+  .crm-col p { font-size: 11.5px; color: var(--ink-soft); line-height: 1.55; }
+
+  .crm-about { display: flex; align-items: center; gap: 28px; margin: 10px 0; }
+  .crm-about .about-photo { width: 92px; height: 92px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; }
+  .crm-about h3 { font-family: 'Lora', serif; font-weight: 600; font-size: 18px; color: var(--ink); margin-bottom: 7px; letter-spacing: -0.01em; }
+  .crm-about p { font-size: 12.5px; color: var(--ink-soft); line-height: 1.65; max-width: 64ch; }
+  .crm-about strong { color: var(--ink); font-weight: 600; }
+
+  .crm-tools .tools-label { font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 18px; }
+  .tools-1line { display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 7px; }
+  .tools-1line img { height: 14px; max-width: 50px; width: auto; object-fit: contain; filter: grayscale(100%); opacity: 0.78; mix-blend-mode: multiply; }
+
+  .crm-approach h4 { font-family: 'Lora', serif; font-weight: 600; font-size: 17px; color: var(--ink); margin-bottom: 7px; letter-spacing: -0.01em; }
+  .crm-approach p { font-size: 12.5px; color: var(--ink-soft); line-height: 1.65; max-width: 68ch; }
+
+  .crm-contact { margin-top: auto; display: flex; align-items: baseline; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); padding-top: 24px; flex-wrap: wrap; }
+  .crm-contact .cc-name { font-family: 'Lora', serif; font-weight: 600; font-size: 16px; color: var(--ink); }
+  .crm-contact .cc-set { font-size: 11.5px; color: var(--ink-soft); }
+
+  /* expertises 2x2 */
+  .crm-expertise { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 40px; }
+  .crm-xp h4 { font-family: 'Lora', serif; font-weight: 600; font-size: 14.5px; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.01em; }
+  .crm-xp > p { font-size: 11px; color: var(--ink-soft); line-height: 1.5; margin-bottom: 9px; }
+  .mini-checks { list-style: none; }
+  .mini-checks li { position: relative; padding: 2.5px 0 2.5px 18px; font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+  .mini-checks li::before { content: "✓"; position: absolute; left: 0; top: 2.5px; color: var(--warm); font-weight: 700; font-size: 10px; }
+
+  /* agents IA */
+  .crm-agents-text { font-size: 12.5px; color: var(--ink-soft); line-height: 1.65; max-width: 72ch; margin-bottom: 14px; }
+  .crm-agents-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 0; }
+  .crm-agents-tags span { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--ink); padding: 0 13px; position: relative; }
+  .crm-agents-tags span:first-child { padding-left: 0; }
+  .crm-agents-tags span + span::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 1px; height: 13px; background: var(--beige); }
+  .crm-agents-tags svg { width: 13px; height: 13px; color: var(--warm); flex: 0 0 auto; }
+
+  /* agents — icône en haut, titre, petit paragraphe */
+  .crm-agents-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .agent-mini { padding: 0 20px; border-left: 1px solid var(--line); }
+  .agent-mini:first-child { padding-left: 0; border-left: none; }
+  .agent-mini:last-child { padding-right: 0; }
+  .am-ic { width: 17px; height: 17px; color: var(--ink-mute); margin-bottom: 8px; }
+  .am-ic svg { width: 100%; height: 100%; }
+  .agent-mini h4 { font-family: 'Lora', serif; font-weight: 600; font-size: 14.5px; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.01em; }
+  .agent-mini p { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+
+  /* tarifs */
+  .price-row { display: grid; grid-template-columns: 1fr 1fr; }
+  .price-col { padding: 0 26px; border-left: 1px solid var(--line); }
+  .price-col:first-child { padding-left: 0; border-left: none; }
+  .price-col:last-child { padding-right: 0; }
+  .price-col h4 { font-family: 'Lora', serif; font-weight: 600; font-size: 14.5px; color: var(--ink); margin-bottom: 8px; letter-spacing: -0.01em; }
+  .price-col .pv { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 18px; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 9px; }
+  .price-col .pv span { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 12px; color: var(--ink-mute); }
+  .price-col p { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+
+  /* automatisation — 3 colonnes */
+  .auto-cols { display: grid; grid-template-columns: repeat(3, 1fr); margin-bottom: 24px; }
+  .auto-col { padding: 0 22px; border-left: 1px solid var(--line); }
+  .auto-col:first-child { padding-left: 0; border-left: none; }
+  .auto-col:last-child { padding-right: 0; }
+  .auto-col h4 { font-family: 'Lora', serif; font-weight: 600; font-size: 14.5px; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.01em; }
+  .auto-col p { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+
+  /* étapes — rangée épurée séparée par barres verticales */
+  /* Auto-specific: 3-col expertise with paragraph + bullets */
+  .crm-expertise-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px 32px; }
+
+  /* Auto-specific: airier spacing to fill the single page */
+  .doc-auto { justify-content: space-between; }
+  .doc-auto .doc-top { margin-bottom: 22px; }
+  .doc-auto h1 { margin-bottom: 16px; }
+  .doc-auto .lede { margin-bottom: 0; }
+  .doc-auto .crm-rule { margin: 24px 0; }
+  .doc-auto .crm-sec-head { margin-bottom: 20px; }
+  .doc-auto .crm-about { margin: 12px 0; gap: 30px; }
+  .doc-auto .crm-about .about-photo { width: 100px; height: 100px; }
+  .doc-auto .crm-expertise-3 { gap: 16px 32px; }
+  .doc-auto .crm-xp > p { margin-bottom: 10px; }
+  .doc-auto .mini-checks li { padding: 3px 0 3px 18px; }
+  .doc-auto .crm-tools { margin-top: 4px; margin-bottom: 4px; }
+  .doc-auto .tools-1line { margin-top: 12px; }
+  .doc-auto .crm-contact-final { margin-top: 24px; padding: 22px 28px 20px; }
+  .doc-auto .crm-contact-final .ccf-lines { gap: 10px 22px; }
+
+  .steps-row { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .doc-crm .crm-expertise + .crm-rule { margin-top: 26px; margin-bottom: 22px; }
+  .step-item { padding: 0 18px; border-left: 1px solid var(--line); }
+  .step-item:first-child { padding-left: 0; border-left: none; }
+  .step-item:last-child { padding-right: 0; }
+  .step-item h4 { font-family: 'Lora', serif; font-weight: 600; font-size: 14.5px; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.01em; }
+  .step-item p { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+
+  /* contact — vrai bloc */
+  .crm-contact-block { display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap; background: var(--cream); border: 1px solid var(--beige); border-radius: 14px; padding: 24px 30px; }
+  .ccb-head h3 { font-family: 'Lora', serif; font-weight: 600; font-size: 19px; color: var(--ink); margin-bottom: 5px; letter-spacing: -0.01em; }
+  .ccb-head p { font-size: 11.5px; color: var(--ink-mute); }
+  .ccb-lines { display: flex; flex-direction: column; gap: 9px; }
+
+  /* contact final — sans encadré, centré, coordonnées en évidence */
+  .crm-contact-final { text-align: center; margin-top: 30px; background: #FBF5EC; border: 1px solid var(--line); border-radius: 6px; padding: 24px 28px 22px; }
+  .crm-contact-final h3 { font-family: 'Lora', serif; font-weight: 600; font-size: 20px; color: var(--ink); margin-bottom: 10px; letter-spacing: -0.01em; }
+  .crm-contact-final p { font-size: 12.5px; color: var(--ink-soft); line-height: 1.6; max-width: 52ch; margin: 0 auto 24px; }
+  .ccf-lines { display: flex; justify-content: center; flex-wrap: nowrap; gap: 18px; }
+  .ccf-lines .cl2 { font-size: 13px; font-weight: 500; color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
+  .ccf-lines .cl2:hover { color: var(--warm); }
+  .ccf-lines .cl2 svg { width: 14px; height: 14px; color: var(--warm); flex: 0 0 auto; }
+
+  /* page 2 — plus aérée */
+  .doc-crm-airy .crm-rule { margin: 26px 0; }
+  .doc-crm-airy .crm-sec-head { margin-bottom: 20px; }
+  .doc-crm-airy .auto-cols { margin-bottom: 28px; }
+  .doc-crm-airy .auto-col p { line-height: 1.6; }
+  .doc-crm-airy .crm-tools { margin-top: 4px; }
+  .doc-crm-airy .crm-agents-text { line-height: 1.7; margin-bottom: 16px; }
+  .doc-crm-airy .crm-pricing { gap: 22px; }
+  .doc-crm-airy .crm-contact-final { margin-top: 18px; }
+
+  .doc-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 30px;
+  }
+  .doc-brand { font-family: 'Lora', serif; font-weight: 700; font-size: 22px; letter-spacing: -0.01em; }
+  .doc-tag { font-size: 11px; color: var(--ink-mute); font-weight: 500; }
+
+  .eyebrow {
+    display: inline-block;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 13px;
+  }
+  .doc h1 {
+    font-family: 'Lora', serif; font-weight: 700;
+    font-size: 33px; line-height: 1.16; letter-spacing: -0.01em;
+    max-width: 15em; margin-bottom: 16px;
+  }
+  .lede { font-size: 13.5px; line-height: 1.65; color: var(--ink-soft); max-width: 44em; margin-bottom: 30px; }
+  .lede strong { font-weight: 600; color: var(--ink); }
+
+  .h2 { font-family: 'Lora', serif; font-weight: 600; font-size: 19px; margin-bottom: 18px; }
+
+  /* service rows */
+  .srv { display: grid; grid-template-columns: 44px 1fr; gap: 18px; align-items: start; margin-bottom: 20px; }
+  .srv-ic {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: #fff; border: 1px solid var(--beige);
+    display: flex; align-items: center; justify-content: center; color: var(--ink);
+  }
+  .srv-ic svg { width: 21px; height: 21px; }
+  .srv h3 { font-size: 15.5px; font-weight: 600; margin-bottom: 4px; }
+  .srv p { font-size: 12.5px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 8px; }
+  .checks { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 22px; }
+  .checks li { font-size: 11.5px; color: var(--ink-soft); padding-left: 18px; position: relative; line-height: 1.5; }
+  .checks li::before {
+    content: "✓"; position: absolute; left: 0; top: 0;
+    color: var(--accent); font-weight: 700; font-size: 11px;
+  }
+
+  /* solutions grid */
+  .sol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 26px; }
+  .sol-card { border: 1px solid var(--beige); background: #fff; border-radius: 14px; padding: 18px 20px; }
+  .sol-ic { width: 38px; height: 38px; border-radius: 10px; background: var(--cream); border: 1px solid var(--beige); display: flex; align-items: center; justify-content: center; color: var(--ink); margin-bottom: 12px; }
+  .sol-ic svg { width: 19px; height: 19px; }
+  .sol-card h4 { font-size: 14.5px; font-weight: 600; margin-bottom: 5px; }
+  .sol-card p { font-size: 11.5px; line-height: 1.5; color: var(--ink-soft); margin-bottom: 11px; }
+  .sol-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sol-tags span { font-size: 10px; color: var(--warm); background: var(--cream); border: 1px solid var(--beige); padding: 3px 9px; border-radius: 5px; }
+
+  /* contact card (light) */
+  .contact-card { margin-top: auto; border: 1px solid var(--beige); background: #fff; border-radius: 16px; padding: 22px 26px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .contact-card .cc-head h4 { font-family: 'Lora', serif; font-weight: 600; font-size: 17px; margin-bottom: 3px; }
+  .contact-card .cc-head .sub { font-size: 11.5px; color: var(--ink-mute); margin-bottom: 15px; }
+  .cc-lines { display: flex; flex-direction: column; gap: 8px; }
+  .cl2 { display: flex; align-items: center; gap: 10px; font-size: 11.5px; color: var(--ink-soft); }
+  .cl2 svg { width: 15px; height: 15px; color: var(--ink); flex: 0 0 auto; }
+  .cc-qr { text-align: center; flex: 0 0 auto; }
+  .cc-qr img { width: 80px; height: 80px; border: 1px solid var(--beige); padding: 5px; border-radius: 10px; background: #fff; display: block; }
+  .cc-qr span { font-size: 9px; color: var(--ink-mute); margin-top: 5px; display: block; }
+
+  /* process steps */
+  .steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 30px; }
+  .step { border: 1px solid var(--beige); border-radius: 14px; padding: 16px 18px; background: #fff; }
+  .step .sn { font-size: 11px; font-weight: 600; color: var(--warm); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .step h4 { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+  .step p { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+
+  /* pillars */
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 4px; }
+  .pillar-ic { color: var(--accent); margin-bottom: 10px; }
+  .pillar-ic svg { width: 24px; height: 24px; }
+  .pillar h4 { font-size: 13.5px; font-weight: 600; margin-bottom: 5px; }
+  .pillar p { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+
+  /* panel + stats */
+  .panel { background: #fff; border: 1px solid var(--beige); border-radius: 16px; padding: 22px 24px; }
+  .stats { display: flex; gap: 34px; }
+  .stat .num { font-family: 'Lora', serif; font-weight: 700; font-size: 22px; line-height: 1; }
+  .stat .lbl { font-size: 10.5px; color: var(--ink-mute); margin-top: 4px; }
+
+  /* tools strip — vrais logos */
+  .tools-block { margin: 6px 0 4px; }
+  .tools-label { font-size: 10.5px; font-weight: 600; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+  .tools-logos { display: flex; flex-wrap: wrap; align-items: center; gap: 22px 36px; }
+  .tools-logos img { height: 28px; max-width: 112px; width: auto; object-fit: contain; filter: grayscale(100%); opacity: 0.82; mix-blend-mode: multiply; }
+
+  /* contact footer inside doc */
+  .doc-foot {
+    margin-top: auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; padding-top: 20px;
+  }
+  .cta-dark { background: var(--ink); color: #fff; border-radius: 16px; padding: 18px 24px; flex: 1; display: flex; align-items: center; justify-content: space-between; }
+  .cta-dark h4 { font-family: 'Lora', serif; font-weight: 600; font-size: 16px; margin-bottom: 10px; }
+  .cta-lines { display: flex; gap: 18px; flex-wrap: wrap; }
+  .cl { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #e6e6ea; }
+  .cl svg { width: 14px; height: 14px; opacity: 0.85; }
+  .cta-qr { text-align: center; }
+  .cta-qr img { width: 74px; height: 74px; background: #fff; padding: 5px; border-radius: 9px; display: block; }
+  .cta-qr span { font-size: 9px; color: #9d9db0; margin-top: 4px; display: block; }
+
+  .pagenum { position: absolute; bottom: 22px; right: 60px; font-size: 10px; color: var(--ink-mute); z-index: 1; }
+
+  /* ============ COMING SOON ============ */
+  .soon-block {
+    width: 794px; min-height: 460px; background: var(--cream); border-radius: 6px;
+    box-shadow: 0 12px 40px rgba(60,45,20,0.15);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+    text-align: center; padding: 60px;
+  }
+  .soon-block .ic { width: 56px; height: 56px; border-radius: 16px; background: #fff; border: 1px solid var(--beige); display: flex; align-items: center; justify-content: center; color: var(--ink); }
+  .soon-block .ic svg { width: 28px; height: 28px; }
+  .soon-block h2 { font-family: 'Lora', serif; font-weight: 700; font-size: 26px; }
+  .soon-block p { font-size: 14px; color: var(--ink-soft); max-width: 32em; line-height: 1.6; }
+
+  /* ============ RESPONSIVE (screen) ============ */
+  @media (max-width: 900px) {
+    .doc, .soon-block { width: 100%; }
+    .doc { padding: 36px 28px 40px; min-height: 0; }
+    .doc h1 { font-size: 26px; }
+    .checks { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    .pillars { grid-template-columns: 1fr; gap: 16px; }
+    .pagenum { display: none; }
+    .doc-foot { flex-direction: column; }
+    .cta-dark { flex-direction: column; align-items: flex-start; gap: 14px; width: 100%; }
+    .pv-brand { display: none; }
+    .pv-tab { padding: 7px 12px; font-size: 12.5px; }
+  }
+
+  /* ============ PRINT ============ */
+  @media print {
+    @page { size: A4; margin: 0; }
+    body { background: #fff; }
+    .pv-bar { display: none !important; }
+    .pv-actions { display: none !important; }
+    .pv-canvas { padding: 0; gap: 0; }
+    .pv-section[hidden] { display: none !important; }
+    .pv-section { display: block; gap: 0; }
+    .doc {
+      width: 210mm; min-height: 297mm; box-shadow: none; border-radius: 0;
+      page-break-after: always; padding: 12mm 16mm 10mm;
+    }
+    .doc:last-child { page-break-after: auto; }
+    .soon-block { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOOLBAR ============ -->
+<header class="pv-bar">
+  <div class="pv-tabs">
+    <a class="pv-brand" href="https://carlmetz.fr" target="_blank" rel="noopener">Carl&nbsp;Metz</a>
+    <button class="pv-tab active" data-tab="crm">Intégration CRM</button>
+    <button class="pv-tab" data-tab="auto">Automatisations</button>
+    <!-- Onglet Agents IA masqué pour le moment — décommenter pour le réactiver :
+    <button class="pv-tab" data-tab="ia" disabled>Agents IA <span class="soon">Bientôt</span></button>
+    -->
+  </div>
+</header>
+
+<!-- ============ ACTIONS BAR (above PDF) ============ -->
+<div class="pv-actions">
+  <div class="pv-actions-inner">
+    <button class="pv-action-btn" id="shareBtn" type="button">
+      <svg class="pv-ic-default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <svg class="pv-ic-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <span class="pv-action-label pv-action-label--default">Copier le lien</span>
+      <span class="pv-action-label pv-action-label--copied">Lien copié</span>
+    </button>
+    <a class="pv-action-btn pv-action-btn-primary" id="downloadBtn" href="Carl-Metz-Integration-CRM.pdf" download="Carl Metz - Integration CRM.pdf">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span class="pv-action-label">Télécharger</span>
+    </a>
+  </div>
+</div>
+
+<main class="pv-canvas">
+
+  <!-- ====================================================== -->
+  <!-- ===============  TAB 1 — INTÉGRATION CRM  ============= -->
+  <!-- ====================================================== -->
+  <section class="pv-section" data-section="crm">
+
+    <!-- Page 1 -->
+    <article class="doc doc-crm">
+      <div class="doc-top">
+        <div class="doc-brand">Carl Metz</div>
+        <div class="doc-tag">Consultant HubSpot | Automatisation | IA</div>
+      </div>
+
+      <span class="eyebrow">Intégration CRM</span>
+      <h1>Pilotez votre croissance par la donnée</h1>
+      <p class="lede">Expert HubSpot indépendant. J'intègre, je structure et je développe votre CRM, j'automatise vos process et le connecte à toute votre stack pour qu'il devienne un vecteur de croissance commerciale.</p>
+
+      <hr class="crm-rule">
+
+      <div class="crm-sec-head">
+        <h3>Mon expertise CRM</h3>
+      </div>
+      <div class="crm-expertise">
+        <div class="crm-xp">
+          <h4>Configuration CRM</h4>
+          <p>Je vous équipe d'un CRM opérationnel : l'outil de travail quotidien de vos équipes et votre tableau de bord commercial.</p>
+          <ul class="mini-checks">
+            <li>Pipeline commerciale et propriétés clés</li>
+            <li>Migration et structuration des données</li>
+            <li>Automatisations de base</li>
+            <li>Formation des équipes incluse</li>
+          </ul>
+        </div>
+        <div class="crm-xp">
+          <h4>Développement CRM avancé</h4>
+          <p>Je développe HubSpot sur-mesure pour qu'il épouse votre fonctionnement, là où le standard ne suffit pas.</p>
+          <ul class="mini-checks">
+            <li>Objets et propriétés personnalisés</li>
+            <li>Intégrations API avec vos outils</li>
+            <li>Workflows multi-conditions</li>
+            <li>Reporting avancé sur-mesure</li>
+          </ul>
+        </div>
+        <div class="crm-xp">
+          <h4>Automatisations avancées</h4>
+          <p>Je connecte votre stack et je supprime les tâches manuelles pour que l'information circule sans ressaisie.</p>
+          <ul class="mini-checks">
+            <li>Flux no-code via n8n ou Make</li>
+            <li>Intégrations API</li>
+            <li>Automatisations cross-plateformes</li>
+            <li>Maintenance et évolutions incluses</li>
+          </ul>
+        </div>
+        <div class="crm-xp">
+          <h4>Actions d'acquisition</h4>
+          <p>J'alimente votre pipeline en continu avec des opportunités qualifiées prêtes à être traitées par vos commerciaux.</p>
+          <ul class="mini-checks">
+            <li>Scraping et enrichissement de bases</li>
+            <li>Séquences d'acquisition personnalisées</li>
+            <li>Lead nurturing automatisé</li>
+            <li>Ajout automatique au pipeline</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="crm-rule">
+
+      <div class="crm-about">
+        <img class="about-photo" src="../Asset/Carl Metz pp1.jpg" alt="Carl Metz">
+        <div>
+          <h3>Au service de votre croissance</h3>
+          <p>Ex-responsable marketing devenu consultant indépendant, je maîtrise autant les enjeux commerciaux que la technique HubSpot. En 5 ans, j'ai mené plus de 25 intégrations pour des startups et PME.</p>
+        </div>
+      </div>
+
+      <hr class="crm-rule">
+
+      <div class="crm-sec-head">
+        <h3>Comment je travaille</h3>
+      </div>
+      <div class="steps-row">
+        <div class="step-item">
+          <h4>Premier échange</h4>
+          <p>Un appel de 30 minutes pour comprendre votre contexte, vos enjeux et vos objectifs.</p>
+        </div>
+        <div class="step-item">
+          <h4>Proposition cadrée</h4>
+          <p>Je vous envoie une proposition adaptée à votre situation et un devis détaillé.</p>
+        </div>
+        <div class="step-item">
+          <h4>Intégration</h4>
+          <p>Je structure votre CRM, je migre vos données, je configure vos workflows et je forme vos équipes.</p>
+        </div>
+        <div class="step-item">
+          <h4>Suivi continu</h4>
+          <p>Tableau de bord, ajustements en continu et accompagnement mensuel selon vos besoins.</p>
+        </div>
+      </div>
+
+    </article>
+
+    <!-- Page 2 -->
+    <article class="doc doc-crm doc-crm-airy">
+      <div class="doc-top">
+        <div class="doc-brand">Carl Metz</div>
+        <div class="doc-tag">Consultant HubSpot | Automatisation | IA</div>
+      </div>
+
+      <div class="crm-sec-head">
+        <h3>Automatisez vos opérations</h3>
+        <p>Connectez vos outils et libérez vos équipes des tâches répétitives.</p>
+      </div>
+      <div class="auto-cols">
+        <div class="auto-col">
+          <h4>Connexion de vos outils</h4>
+          <p>Vos logiciels parlent enfin entre eux : fini les ressaisies et les copier-coller entre applications.</p>
+        </div>
+        <div class="auto-col">
+          <h4>Tâches automatisées</h4>
+          <p>Assignation de leads, relances, mises à jour de statut et alertes internes tournent toutes seules, 24h/24.</p>
+        </div>
+        <div class="auto-col">
+          <h4>Flux sur-mesure</h4>
+          <p>No-code via n8n ou Make, ou intégrations API selon la complexité de vos process.</p>
+        </div>
+      </div>
+      <div class="crm-tools">
+        <div class="tools-label">Outils dont je suis expert</div>
+        <div class="tools-1line">
+          <img src="../Asset/Tools/docusign-logo.png" alt="DocuSign">
+          <img src="../Asset/Tools/Make.png" alt="Make">
+          <img src="../Asset/Tools/N8N.png" alt="n8n">
+          <img src="../Asset/Tools/Slack.png" alt="Slack">
+          <img src="../Asset/Tools/Stripe.png" alt="Stripe">
+          <img src="../Asset/Tools/Notion.png" alt="Notion">
+          <img src="../Asset/Tools/Airtable.png" alt="Airtable">
+          <img src="../Asset/Tools/Aircall.png" alt="Aircall">
+          <img src="../Asset/Tools/Pennylane.png" alt="Pennylane">
+          <img src="../Asset/Tools/Bubble.png" alt="Bubble">
+          <img src="../Asset/Tools/Wrike.png" alt="Wrike">
+        </div>
+      </div>
+
+      <hr class="crm-rule">
+
+      <div class="crm-agents">
+        <div class="crm-sec-head">
+          <h3>Pour aller plus loin, des agents IA intégrés à votre CRM</h3>
+        </div>
+        <p class="crm-agents-text">Intégrez à votre CRM des agents IA que j'ai développés et que je connecte directement à vos outils. Ils prennent en charge vos tâches répétitives en continu (prospection, qualification, relance, reporting) et traitent vos leads en temps réel. Le résultat : une capacité opérationnelle multipliée, sans recruter.</p>
+        <div class="crm-agents-grid">
+          <div class="agent-mini">
+            <div class="am-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+            <h4>Agent prospection</h4>
+            <p>Identifie et contacte vos prospects en continu, avec des messages personnalisés selon votre cible.</p>
+          </div>
+          <div class="agent-mini">
+            <div class="am-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+            <h4>Agent qualification</h4>
+            <p>Analyse vos demandes entrantes, les score et les oriente vers le bon interlocuteur.</p>
+          </div>
+          <div class="agent-mini">
+            <div class="am-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
+            <h4>Agent relance</h4>
+            <p>Détecte le bon moment et relance automatiquement vos opportunités en sommeil.</p>
+          </div>
+          <div class="agent-mini">
+            <div class="am-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+            <h4>Agent enrichissement</h4>
+            <p>Complète et fiabilise vos fiches contacts avec des données à jour.</p>
+          </div>
+        </div>
+      </div>
+
+      <hr class="crm-rule">
+
+      <div class="crm-sec-head">
+        <h3>Un accompagnement sur-mesure</h3>
+      </div>
+      <div class="price-row">
+        <div class="price-col">
+          <h4>Intégration & Configuration CRM</h4>
+          <div class="pv">À partir de 3 000 €</div>
+          <p>Pipeline, migration des données, workflows et tableaux de bord. Vos équipes repartent avec un CRM conçu pour performer.</p>
+        </div>
+        <div class="price-col">
+          <h4>Accompagnement sur-mesure</h4>
+          <div class="pv">700 € <span>/ jour</span></div>
+          <p>En régie : intégrations, automatisations n8n / Make et évolutions continues, au rythme de vos besoins.</p>
+        </div>
+      </div>
+
+      <div class="crm-contact-final">
+        <h3>Contactez-moi</h3>
+        <p>Je vous propose un échange de 30 minutes pour faire connaissance et comprendre votre projet.</p>
+        <div class="ccf-lines">
+          <a class="cl2" href="mailto:hello@carlmetz.fr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg> hello@carlmetz.fr</a>
+          <a class="cl2" href="tel:+33626383766"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 06 26 38 37 66</a>
+          <a class="cl2" href="https://carlmetz.fr" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> carlmetz.fr</a>
+          <a class="cl2" href="https://www.linkedin.com/in/carl-metz" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> linkedin.com/in/carl-metz</a>
+        </div>
+      </div>
+
+    </article>
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- ===============  TAB 2 — AUTOMATISATIONS  ============= -->
+  <!-- ====================================================== -->
+  <section class="pv-section" data-section="auto" hidden>
+
+    <!-- Single page -->
+    <article class="doc doc-crm doc-auto">
+      <div class="doc-top">
+        <div class="doc-brand">Carl Metz</div>
+        <div class="doc-tag">Consultant HubSpot | Automatisation | IA</div>
+      </div>
+
+      <span class="eyebrow">Automatisations</span>
+      <h1>Connectez vos outils, automatisez vos process</h1>
+      <p class="lede">Consultant indépendant spécialisé en automatisation. Je connecte votre stack, je supprime les tâches répétitives et je libère vos équipes pour qu'elles se concentrent sur la création de valeur.</p>
+
+      <hr class="crm-rule">
+
+      <div class="crm-sec-head">
+        <h3>Mon expertise</h3>
+      </div>
+      <div class="crm-expertise-3">
+        <div class="crm-xp">
+          <h4>Connexion de vos outils</h4>
+          <p>J'intègre votre stack via flux no-code ou API pour que vos logiciels échangent en temps réel.</p>
+          <ul class="mini-checks">
+            <li>Intégrations API natives</li>
+            <li>Flux no-code n8n et Make</li>
+            <li>Synchronisation temps réel</li>
+            <li>Alertes cross-plateformes</li>
+          </ul>
+        </div>
+        <div class="crm-xp">
+          <h4>Automatisation des process</h4>
+          <p>Je transforme vos process récurrents en workflows autonomes pour libérer vos équipes des tâches répétitives.</p>
+          <ul class="mini-checks">
+            <li>Assignation des leads</li>
+            <li>Séquences de relance</li>
+            <li>Mises à jour de statut</li>
+            <li>Alertes internes Slack ou email</li>
+          </ul>
+        </div>
+        <div class="crm-xp">
+          <h4>Flux sur-mesure</h4>
+          <p>Je conçois des automatisations adaptées à votre métier, du no-code rapide aux intégrations API complexes.</p>
+          <ul class="mini-checks">
+            <li>Logiques métier complexes</li>
+            <li>Génération de documents</li>
+            <li>Maintenance et évolutions</li>
+            <li>Documentation incluse</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="crm-rule">
+
+      <div class="crm-about">
+        <img class="about-photo" src="../Asset/Carl Metz pp1.jpg" alt="Carl Metz">
+        <div>
+          <h3>Au service de votre productivité</h3>
+          <p>Ex-responsable marketing devenu consultant indépendant, je maîtrise autant les enjeux opérationnels que la technique. En 5 ans, j'ai déployé des automatisations pour des PME et ETI sur HubSpot, n8n, Make et au-delà.</p>
+        </div>
+      </div>
+
+      <hr class="crm-rule">
+
+      <div class="crm-tools">
+        <div class="tools-label">Outils dont je suis expert</div>
+        <div class="tools-1line">
+          <img src="../Asset/Tools/docusign-logo.png" alt="DocuSign">
+          <img src="../Asset/Tools/Make.png" alt="Make">
+          <img src="../Asset/Tools/N8N.png" alt="n8n">
+          <img src="../Asset/Tools/Slack.png" alt="Slack">
+          <img src="../Asset/Tools/Stripe.png" alt="Stripe">
+          <img src="../Asset/Tools/Notion.png" alt="Notion">
+          <img src="../Asset/Tools/Airtable.png" alt="Airtable">
+          <img src="../Asset/Tools/Aircall.png" alt="Aircall">
+          <img src="../Asset/Tools/Pennylane.png" alt="Pennylane">
+          <img src="../Asset/Tools/Bubble.png" alt="Bubble">
+          <img src="../Asset/Tools/Wrike.png" alt="Wrike">
+        </div>
+      </div>
+
+      <div class="crm-contact-final">
+        <h3>Contactez-moi</h3>
+        <p>Je vous propose un échange de 30 minutes pour faire connaissance et comprendre votre projet.</p>
+        <div class="ccf-lines">
+          <a class="cl2" href="mailto:hello@carlmetz.fr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg> hello@carlmetz.fr</a>
+          <a class="cl2" href="tel:+33626383766"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 06 26 38 37 66</a>
+          <a class="cl2" href="https://carlmetz.fr" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> carlmetz.fr</a>
+          <a class="cl2" href="https://www.linkedin.com/in/carl-metz" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> linkedin.com/in/carl-metz</a>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- ===============  TAB 3 — AGENTS IA  =================== -->
+  <!-- ====================================================== -->
+  <section class="pv-section" data-section="ia" hidden>
+    <div class="soon-block">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg></div>
+      <h2>Agents IA</h2>
+      <p>Cette section arrive bientôt. Elle présentera les agents IA qui exécutent vos missions commerciales en autonomie : prospection, qualification, enrichissement, commercial itinérant et reporting.</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  (function () {
+    var tabs = document.querySelectorAll('.pv-tab');
+    var sections = document.querySelectorAll('.pv-section');
+    var shareBtn = document.getElementById('shareBtn');
+    var downloadBtn = document.getElementById('downloadBtn');
+    var actionsBar = document.querySelector('.pv-actions');
+
+    // Tab → PDF mapping
+    var PDFS = {
+      crm:  { file: 'Carl-Metz-Integration-CRM.pdf',  name: 'Carl Metz - Integration CRM.pdf'  },
+      auto: { file: 'Carl-Metz-Automatisations.pdf',  name: 'Carl Metz - Automatisations.pdf'  }
+    };
+
+    function updateURL(name) {
+      var url = new URL(window.location.href);
+      url.searchParams.set('tab', name);
+      // strip legacy ?print=
+      url.searchParams.delete('print');
+      history.replaceState(null, '', url);
+    }
+
+    function updateDownload(name) {
+      var pdf = PDFS[name];
+      if (pdf) {
+        downloadBtn.style.display = '';
+        downloadBtn.href = pdf.file;
+        downloadBtn.setAttribute('download', pdf.name);
+      } else {
+        downloadBtn.style.display = 'none';
+      }
+    }
+
+    function activate(name, opts) {
+      opts = opts || {};
+      tabs.forEach(function (t) { t.classList.toggle('active', t.dataset.tab === name); });
+      sections.forEach(function (s) { s.hidden = (s.dataset.section !== name); });
+      updateURL(name);
+      updateDownload(name);
+      if (!opts.silent) window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        if (t.disabled) return;
+        activate(t.dataset.tab);
+      });
+    });
+
+    // Share: copy current URL to clipboard, green button confirmation
+    if (shareBtn) {
+      shareBtn.addEventListener('click', function () {
+        var url = window.location.href;
+        var done = function () {
+          shareBtn.classList.add('copied');
+          clearTimeout(shareBtn._t);
+          shareBtn._t = setTimeout(function () { shareBtn.classList.remove('copied'); }, 1800);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(done, function () {
+            // Fallback: legacy copy
+            var ta = document.createElement('textarea');
+            ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+            document.body.appendChild(ta); ta.select();
+            try { document.execCommand('copy'); done(); } catch (e) {}
+            document.body.removeChild(ta);
+          });
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy'); done(); } catch (e) {}
+          document.body.removeChild(ta);
+        }
+      });
+    }
+
+    // Initial activation: read ?tab= (or legacy ?print=)
+    var params = new URLSearchParams(window.location.search);
+    var initial = params.get('tab') || params.get('print') || 'crm';
+    if (!PDFS[initial] && initial !== 'ia') initial = 'crm';
+    activate(initial, { silent: true });
+  })();
+</script>
+</body>
+</html>
