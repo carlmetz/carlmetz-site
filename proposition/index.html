@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Proposition — Carl Metz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<link rel="icon" type="image/png" href="../Asset/favicon/favicon 162.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #0a0a0a;
+    --ink-soft: #4a4a4a;
+    --ink-mute: #8a8a8a;
+    --warm: #7a6a52;
+    --cream: #FCF7F2;
+    --beige: #E8E0D0;
+    --line: #e6ddcc;
+    --canvas: #f7f1e6;
+    --accent: #b8472a;
+  }
+  html, body { height: 100%; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    background: #3a3a3e;
+    -webkit-font-smoothing: antialiased;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    overflow: hidden;
+  }
+
+  /* ============ DECK = slide stage (no scroll) ============ */
+  html, body { overflow: hidden; overscroll-behavior: none; }
+  .deck {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    padding: 0;
+    gap: 0;
+    display: block;
+    position: relative;
+  }
+
+  /* ============ SLIDE (absolute, crossfade, centered card) ============ */
+  .slide {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(94vw, calc(94vh * 16 / 9));
+    aspect-ratio: 16 / 9;
+    height: auto;
+    max-width: none;
+    background: #FEFCFA;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.22);
+    border-radius: 10px;
+    overflow: hidden;
+    padding: clamp(36px, 4.4vh, 70px) clamp(48px, 5.2vw, 100px);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.22s ease;
+  }
+  .slide.is-active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+  }
+
+  /* ============ FLOATING UI (bottom-right toolbar) ============ */
+  .floating-toolbar {
+    position: fixed;
+    bottom: 18px;
+    right: 22px;
+    z-index: 60;
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .floating-download {
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--ink);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 9px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    text-decoration: none;
+    transition: background 0.18s ease, transform 0.05s ease;
+  }
+  .floating-download:hover { background: #fff; }
+  .floating-download:active { transform: translateY(1px); }
+  .floating-download svg { width: 14px; height: 14px; }
+  .page-indicator {
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .page-indicator .pi-num { font-weight: 600; }
+  .page-indicator .pi-hint {
+    font-weight: 400;
+    font-size: 11px;
+    color: var(--ink-mute);
+    padding-left: 12px;
+    border-left: 1px solid var(--beige);
+    letter-spacing: 0;
+  }
+  .slide::before {
+    content: "";
+    position: absolute;
+    top: -240px; right: -260px;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 42% 45%, rgba(255,205,150,0.36) 0%, transparent 62%),
+      radial-gradient(circle at 60% 60%, rgba(232,224,208,0.55) 0%, transparent 64%);
+    filter: blur(70px);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .slide > * { position: relative; z-index: 1; }
+
+  /* slide brand strip */
+  .slide-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 36px;
+  }
+  .slide-brand {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .slide-brand .brand-sep {
+    color: var(--ink-mute);
+    font-weight: 400;
+    margin: 0 10px;
+  }
+  .slide-brand .brand-sub {
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .slide-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  /* typo */
+  .eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 16px;
+  }
+  h1.slide-title {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: clamp(36px, 3.8vw, 56px);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  h2.slide-title {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 3vw, 46px);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .lede {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(15px, 1.4vw, 21px);
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 60ch;
+  }
+
+  /* ============ SLIDE 1 — INTRO (cover, centrée, épurée) ============ */
+  .s-intro {
+    padding: 60px 90px;
+    text-align: center;
+    align-items: center;
+  }
+  .s-intro .slide-top {
+    width: 100%;
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+  .s-intro-body {
+    margin: auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+  }
+  .s-intro h1 {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: 46px;
+    line-height: 1.18;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    max-width: none;
+    white-space: nowrap;
+  }
+  .s-intro h1 em {
+    display: block;
+    font-style: italic;
+    font-weight: 500;
+    color: #2a241c;
+    margin-top: 6px;
+    white-space: nowrap;
+  }
+  .s-intro-foot {
+    width: 100%;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .s-intro-name {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--ink);
+  }
+  .s-intro-role {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--warm);
+  }
+  .s-intro-coords-line {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+  .s-intro-coords-line a {
+    color: var(--ink);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .s-intro-coords-line a:hover { color: var(--warm); }
+  .s-intro-coords-line a svg {
+    width: 13px;
+    height: 13px;
+    color: var(--warm);
+    flex: 0 0 auto;
+  }
+
+  /* ============ SLIDE 3 — CV TIMELINE ============ */
+  .s-cv .timeline {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8px 0 30px;
+  }
+  .tl-track {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 26px;
+    padding-top: 36px;
+  }
+  .tl-line {
+    position: absolute;
+    top: 16px;
+    left: 4%;
+    right: 4%;
+    height: 1px;
+    background: var(--line);
+    z-index: 0;
+  }
+  .tl-line::before, .tl-line::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--warm);
+    transform: translateY(-50%);
+  }
+  .tl-line::before { left: -4px; }
+  .tl-line::after { right: -4px; }
+  .tl-item {
+    position: relative;
+    padding-top: 4px;
+  }
+  .tl-item::before {
+    content: "";
+    position: absolute;
+    top: -24px;
+    left: 0;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--warm);
+    border: 2.5px solid #FEFCFA;
+    box-shadow: 0 0 0 1px var(--warm);
+  }
+  .tl-date {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 8px;
+  }
+  .tl-title {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: -0.005em;
+    line-height: 1.25;
+  }
+  .tl-subtitle {
+    font-size: 13px;
+    color: var(--warm);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .tl-item p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .tl-bullets {
+    list-style: none;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .tl-bullets li {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    padding-left: 14px;
+    position: relative;
+  }
+  .tl-bullets li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 5px;
+    height: 1px;
+    background: var(--warm);
+  }
+
+  /* ============ SLIDE 4 / 5 — PRESTATIONS ============ */
+  .s-presta { display: flex; flex-direction: column; }
+  .s-presta .slide-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 28px;
+  }
+  /* Automation: group cols + tools centered in remaining space */
+  .auto-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: clamp(28px, 3.4vh, 48px);
+    justify-content: center;
+  }
+  .presta-intro {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 36px;
+    align-items: end;
+  }
+  .presta-intro .lede { margin: 0; }
+  .presta-intro-meta {
+    font-size: 13px;
+    color: var(--ink-mute);
+    text-align: right;
+    border-left: 1px solid var(--line);
+    padding-left: 24px;
+  }
+  .presta-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 26px 48px;
+    flex: 1;
+    align-content: center;
+  }
+  .presta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .presta-block h4 {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: clamp(18px, 1.55vw, 24px);
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .presta-block p {
+    font-size: clamp(13px, 1.05vw, 16px);
+    color: var(--ink-soft);
+    line-height: 1.55;
+    margin-bottom: 4px;
+  }
+  .presta-block ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .presta-block ul li {
+    font-size: clamp(12.5px, 0.95vw, 15px);
+    color: var(--ink-soft);
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .presta-block ul li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--warm);
+    font-weight: 700;
+  }
+
+  /* automation slide tools strip */
+  .tools-strip {
+    margin-top: auto;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+  .tools-strip.tools-strip--inline {
+    margin-top: 28px;
+    padding-top: 0;
+    border-top: none;
+  }
+  .tools-strip-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 14px;
+  }
+  .tools-strip--inline .tools-strip-label {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: clamp(18px, 1.55vw, 24px);
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    text-transform: none;
+    margin-bottom: clamp(18px, 1.8vh, 28px);
+  }
+  .tools-strip--inline .tools-row {
+    gap: clamp(20px, 2vw, 32px);
+    margin-bottom: 8px;
+  }
+  .tools-strip--inline .tools-row img {
+    height: clamp(22px, 2vh, 30px);
+    max-width: clamp(70px, 6vw, 100px);
+  }
+
+  /* ============ SLIDE — MÉTHODE ET TARIFICATION ============ */
+  .s-method { display: flex; flex-direction: column; }
+  .s-method .slide-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 30px;
+    justify-content: space-between;
+  }
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  .method-step {
+    padding: 0 clamp(24px, 2.6vw, 44px);
+    border-left: 1px solid var(--line);
+  }
+  .method-step:first-child { padding-left: 0; border-left: none; }
+  .method-step:last-child { padding-right: 0; }
+  .ms-num {
+    display: block;
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 2.6vw, 40px);
+    color: var(--warm);
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+    line-height: 1;
+  }
+  .method-step h4 {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: clamp(20px, 1.8vw, 28px);
+    color: var(--ink);
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .method-step p {
+    font-size: clamp(13.5px, 1.1vw, 17px);
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  /* Pricing boxes */
+  .pricing-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(18px, 1.6vw, 28px);
+  }
+  .pricing-box {
+    background: #FBF5EC;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: clamp(20px, 2vh, 30px) clamp(24px, 2.4vw, 36px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pricing-box h4 {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: clamp(19px, 1.7vw, 24px);
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .pricing-box p {
+    font-size: clamp(13.5px, 1.05vw, 16px);
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .pricing-box .pb-price {
+    margin-top: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: clamp(17px, 1.4vw, 22px);
+    color: var(--ink);
+  }
+  .pricing-box .pb-price span {
+    font-weight: 400;
+    font-size: clamp(13px, 1.05vw, 16px);
+    color: var(--ink-mute);
+    margin-left: 4px;
+  }
+
+  /* ============ SLIDE — USE CASE ============ */
+  .s-usecase { display: flex; flex-direction: column; }
+  .s-usecase .slide-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 30px;
+    justify-content: space-between;
+  }
+  .uc-header { display: flex; align-items: center; gap: clamp(22px, 2.2vw, 36px); }
+  .uc-logo {
+    height: clamp(38px, 3.4vw, 58px);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .uc-logo img { height: 100%; width: auto; object-fit: contain; display: block; }
+  .uc-logo--placeholder {
+    height: clamp(54px, 4.4vw, 76px);
+    min-width: clamp(80px, 7vw, 120px);
+    padding: 0 16px;
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    justify-content: center;
+    color: var(--ink-mute);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .uc-header h2 { margin-bottom: 8px; }
+  .uc-header .lede { margin: 0; }
+
+  .uc-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: clamp(36px, 4vw, 70px);
+    align-items: start;
+    flex: 1;
+  }
+  .uc-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(10.5px, 0.85vw, 12px);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: clamp(12px, 1.4vh, 20px);
+  }
+  .uc-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 0.9vh, 14px);
+  }
+  .uc-bullets li {
+    font-size: clamp(13.5px, 1.1vw, 17px);
+    color: var(--ink-soft);
+    padding-left: 22px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .uc-bullets li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 12px;
+    height: 1px;
+    background: var(--warm);
+  }
+  .uc-side {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(26px, 3vh, 42px);
+  }
+  .uc-budget-value {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: clamp(30px, 2.8vw, 44px);
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    line-height: 1;
+  }
+  .uc-ref { display: flex; align-items: center; gap: clamp(16px, 1.5vw, 22px); }
+  .uc-photo {
+    width: clamp(64px, 5vw, 84px);
+    height: clamp(64px, 5vw, 84px);
+    border-radius: 50%;
+    background: var(--cream);
+    border: 1px solid var(--line);
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: clamp(18px, 1.6vw, 24px);
+    color: var(--ink-mute);
+  }
+  .uc-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .uc-ref-name {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: clamp(17px, 1.4vw, 22px);
+    color: var(--ink);
+    margin-bottom: 4px;
+    letter-spacing: -0.005em;
+  }
+  .uc-ref-meta {
+    font-size: clamp(12.5px, 1vw, 15px);
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+  .tools-row {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .tools-row img {
+    height: 22px;
+    max-width: 80px;
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.82;
+    mix-blend-mode: multiply;
+  }
+
+  /* ============ RESPONSIVE — display ============ */
+  @media (max-width: 1340px) {
+    .slide { transform-origin: top center; }
+  }
+  @media (max-width: 900px) {
+    .deck { padding: 16px 12px 60px; gap: 16px; }
+    .slide {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      padding: 28px 32px;
+    }
+    .s-intro h1 { font-size: clamp(28px, 6vw, 56px); }
+    h1.slide-title { font-size: clamp(26px, 5vw, 44px); }
+    .s-bio-grid { grid-template-columns: 200px 1fr; gap: 30px; }
+    .s-bio-photo { width: 200px; height: 200px; }
+    .s-bio-quote { font-size: clamp(20px, 3vw, 32px); }
+    .tl-track { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ============ PRINT (16:9 landscape, one slide per page) ============ */
+  @media print {
+    @page { size: 13.333in 7.5in; margin: 0; }
+    html, body { height: auto; overflow: visible; background: #fff; overscroll-behavior: auto; }
+    .floating-toolbar, .floating-download, .page-indicator { display: none !important; }
+    .deck {
+      height: auto;
+      width: auto;
+      overflow: visible;
+      padding: 0;
+      gap: 0;
+      display: block;
+      position: static;
+    }
+    .slide {
+      position: static;
+      inset: auto;
+      width: 13.333in;
+      height: 7.5in;
+      max-width: none;
+      aspect-ratio: auto;
+      box-shadow: none;
+      border-radius: 0;
+      page-break-after: always;
+      padding: 0.7in 0.85in;
+      visibility: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      transition: none !important;
+    }
+    .slide:last-child { page-break-after: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ FLOATING UI (bottom-right) ============ -->
+<div class="floating-toolbar">
+  <div class="page-indicator">
+    <span class="pi-num" id="slideCounter">— / —</span>
+    <span class="pi-hint">← → ou Espace pour naviguer</span>
+  </div>
+  <button class="floating-download" id="downloadBtn" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Télécharger
+  </button>
+</div>
+
+<main class="deck">
+
+  <!-- ============ SLIDE 1 — INTRO (cover, centrée, épurée) ============ -->
+  <section class="slide s-intro">
+    <div class="slide-top">&nbsp;</div>
+
+    <div class="s-intro-body">
+      <h1>Intégrations sur-mesure pour votre business<em>Des agents IA qui travaillent à votre place</em></h1>
+    </div>
+
+    <div class="s-intro-foot">
+      <div class="s-intro-name">Carl Metz</div>
+      <div class="s-intro-role">Consultant CRM &nbsp;|&nbsp; Automatisation &nbsp;|&nbsp; IA</div>
+      <div class="s-intro-coords-line">
+        <a href="mailto:hello@carlmetz.fr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg> hello@carlmetz.fr</a>
+        <a href="tel:+33626383766"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 06 26 38 37 66</a>
+        <a href="https://carlmetz.fr" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> carlmetz.fr</a>
+        <a href="https://www.linkedin.com/in/carl-metz" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> linkedin.com/in/carl-metz</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 3 — CV / EXPÉRIENCES ============ -->
+  <section class="slide s-cv">
+    <div>
+      <h2 class="slide-title">Une double expertise : business et technique</h2>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-track">
+        <div class="tl-line"></div>
+        <div class="tl-item">
+          <div class="tl-date">2020</div>
+          <div class="tl-title">Master en école de commerce</div>
+          <div class="tl-subtitle">EM Strasbourg</div>
+          <ul class="tl-bullets">
+            <li>Spécialisation en marketing digital et entrepreneuriat</li>
+          </ul>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2020 — 2021</div>
+          <div class="tl-title">Chef de projet marketing</div>
+          <div class="tl-subtitle">Kaliz</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2021 — 2023</div>
+          <div class="tl-title">Responsable marketing</div>
+          <div class="tl-subtitle">Kaliz</div>
+          <ul class="tl-bullets">
+            <li>Pilotage d'une équipe de 4 personnes</li>
+            <li>Structuration du CRM</li>
+            <li>Gestion du site et du design</li>
+            <li>Suivi des campagnes d'acquisition</li>
+            <li>Relations presse</li>
+            <li>Communication autour d'une levée de fonds (20 M€)</li>
+          </ul>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2023 — Aujourd'hui</div>
+          <div class="tl-title">Consultant indépendant</div>
+          <div class="tl-subtitle">Carl Metz</div>
+          <ul class="tl-bullets">
+            <li>20+ intégrations réalisées</li>
+            <li>Déployé à Nice, Paris et Strasbourg</li>
+            <li>Expert HubSpot</li>
+            <li>Automatisation</li>
+            <li>IA</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 4 — ACCOMPAGNEMENT CRM ============ -->
+  <section class="slide s-presta">
+    <div class="slide-body">
+      <div>
+        <h2 class="slide-title">Pilotez votre croissance par la donnée</h2>
+        <p class="lede">Je vous accompagne sur votre CRM, quel que soit son niveau de maturité.</p>
+      </div>
+
+      <div class="presta-grid-4">
+        <div class="presta-block">
+          <h4>Configuration CRM</h4>
+          <p>Je vous équipe d'un CRM opérationnel : l'outil quotidien de vos équipes et votre tableau de bord commercial.</p>
+          <ul>
+            <li>Pipeline commerciale et propriétés clés</li>
+            <li>Migration et structuration des données</li>
+            <li>Automatisations de base, formation incluse</li>
+          </ul>
+        </div>
+        <div class="presta-block">
+          <h4>Développement CRM avancé</h4>
+          <p>Je développe HubSpot sur-mesure pour qu'il épouse votre fonctionnement, là où le standard ne suffit pas.</p>
+          <ul>
+            <li>Objets et propriétés personnalisés</li>
+            <li>Intégrations API et workflows multi-conditions</li>
+            <li>Reporting avancé sur-mesure</li>
+          </ul>
+        </div>
+        <div class="presta-block">
+          <h4>Automatisations avancées</h4>
+          <p>Je connecte votre stack et je supprime les tâches manuelles pour que l'information circule sans ressaisie.</p>
+          <ul>
+            <li>Flux no-code via n8n ou Make</li>
+            <li>Intégrations API cross-plateformes</li>
+            <li>Maintenance et évolutions incluses</li>
+          </ul>
+        </div>
+        <div class="presta-block">
+          <h4>Actions d'acquisition</h4>
+          <p>J'alimente votre pipeline en continu avec des opportunités qualifiées prêtes à traiter.</p>
+          <ul>
+            <li>Scraping et enrichissement de bases</li>
+            <li>Séquences d'acquisition personnalisées</li>
+            <li>Lead nurturing automatisé</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 5 — AUTOMATION ============ -->
+  <section class="slide s-presta">
+    <div class="slide-body">
+      <div>
+        <h2 class="slide-title">Connectez vos outils, automatisez vos process</h2>
+        <p class="lede">Je connecte votre stack, je supprime les tâches répétitives et je libère vos équipes pour qu'elles se concentrent sur la création de valeur.</p>
+      </div>
+
+      <div class="auto-content">
+      <div class="presta-grid-4" style="grid-template-columns: repeat(3, 1fr); align-content: start; flex: 0 0 auto;">
+        <div class="presta-block">
+          <h4>Connexion de vos outils</h4>
+          <p>J'intègre votre stack via flux no-code (n8n, Make) ou API pour que vos logiciels échangent en temps réel.</p>
+        </div>
+        <div class="presta-block">
+          <h4>Automatisation des process</h4>
+          <p>Je transforme vos process récurrents en workflows autonomes : assignation, relances, mises à jour, alertes.</p>
+        </div>
+        <div class="presta-block">
+          <h4>Flux sur-mesure</h4>
+          <p>Je conçois des automatisations adaptées à votre métier, du no-code rapide aux intégrations API complexes.</p>
+        </div>
+      </div>
+
+      <div class="tools-strip tools-strip--inline">
+        <div class="tools-strip-label">Outils dont je suis expert</div>
+        <div class="tools-row">
+          <img src="../Asset/Tools/docusign-logo.png" alt="DocuSign">
+          <img src="../Asset/Tools/Make.png" alt="Make">
+          <img src="../Asset/Tools/N8N.png" alt="n8n">
+          <img src="../Asset/Tools/Slack.png" alt="Slack">
+          <img src="../Asset/Tools/Stripe.png" alt="Stripe">
+          <img src="../Asset/Tools/Notion.png" alt="Notion">
+          <img src="../Asset/Tools/Airtable.png" alt="Airtable">
+          <img src="../Asset/Tools/Aircall.png" alt="Aircall">
+          <img src="../Asset/Tools/Pennylane.png" alt="Pennylane">
+          <img src="../Asset/Tools/Bubble.png" alt="Bubble">
+          <img src="../Asset/Tools/Wrike.png" alt="Wrike">
+        </div>
+      </div>
+      </div><!-- /.auto-content -->
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 6 — MÉTHODE ET TARIFICATION ============ -->
+  <section class="slide s-method">
+    <div class="slide-body">
+      <div>
+        <h2 class="slide-title">Méthode et tarification</h2>
+        <p class="lede">Un accompagnement structuré, du diagnostic au suivi continu, avec deux modèles de tarification adaptés à votre besoin.</p>
+      </div>
+
+      <div class="method-grid">
+        <div class="method-step">
+          <span class="ms-num">01</span>
+          <h4>Audit</h4>
+          <p>De l'analyse du challenge ou du besoin à l'audit d'un service, voire de l'entreprise entière. Je pose un diagnostic clair avant de cadrer la mission.</p>
+        </div>
+        <div class="method-step">
+          <span class="ms-num">02</span>
+          <h4>Lancement et sprints</h4>
+          <p>Mission lancée puis découpée en sprints courts. Chaque milestone livre un point précis, validé avec vous au fil de l'avancement.</p>
+        </div>
+        <div class="method-step">
+          <span class="ms-num">03</span>
+          <h4>Maintenance et suivi</h4>
+          <p>Une fois la mission livrée, je reste en support pour faire évoluer vos outils au rythme de votre activité.</p>
+        </div>
+      </div>
+
+      <div class="pricing-row">
+        <div class="pricing-box">
+          <h4>À la mission</h4>
+          <p>Forfait calé sur un périmètre, des livrables et des délais définis ensemble en début de mission.</p>
+        </div>
+        <div class="pricing-box">
+          <h4>Au réel</h4>
+          <p>Temps facturé à la journée, avec un tarif dégressif selon le volume engagé.</p>
+          <div class="pb-price">700 € <span>/ jour, dégressif</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 7 — USE CASE 1 / 3 : HOPIA ============ -->
+  <section class="slide s-usecase">
+    <div class="slide-body">
+      <div class="uc-header">
+        <div class="uc-logo"><img src="../Asset/prez cvm/hopia-wordmark.svg" alt="Hopia"></div>
+        <div>
+          <h2 class="slide-title">Hopia</h2>
+          <p class="lede">Refonte CRM, automatisations et acquisition pour les équipes commerciale et CSM.</p>
+        </div>
+      </div>
+
+      <div class="uc-grid">
+        <div class="uc-mission">
+          <div class="uc-label">Périmètre de la mission</div>
+          <ul class="uc-bullets">
+            <li>Migration et configuration du CRM pour l'équipe commerciale</li>
+            <li>Configuration du CRM pour l'équipe CSM</li>
+            <li>Mise en place du reporting</li>
+            <li>Configuration de l'outil de gestion de projet (Wrike)</li>
+            <li>Scraping de bases de données</li>
+            <li>Actions d'acquisition</li>
+            <li>Mise en place de flux de données entre le CRM, Wrike, l'outil de facturation et Notion</li>
+          </ul>
+        </div>
+
+        <div class="uc-side">
+          <div>
+            <div class="uc-label">Référence</div>
+            <div class="uc-ref">
+              <div class="uc-photo"><img src="../Asset/prez cvm/victoire bach.jpeg" alt="Victoire Bach"></div>
+              <div>
+                <div class="uc-ref-name">Victoire Bach</div>
+                <div class="uc-ref-meta">Paris<br>Coordonnées sur demande</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="uc-label">Résultats</div>
+            <ul class="uc-bullets">
+              <li>Base de données formatée et propre</li>
+              <li>Suivi en temps réel de l'activité commerciale</li>
+              <li>+12 % de conversion de R1 à signature</li>
+              <li>+28 k€ d'ARR sur la prospection</li>
+            </ul>
+          </div>
+          <div>
+            <div class="uc-label">Budget</div>
+            <div class="uc-budget-value">35 k€</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 8 — USE CASE 2 / 3 : DER KREIS ============ -->
+  <section class="slide s-usecase">
+    <div class="slide-body">
+      <div class="uc-header">
+        <div class="uc-logo"><img src="../Asset/prez cvm/Logo DK.webp" alt="Der Kreis"></div>
+        <div>
+          <h2 class="slide-title">Der Kreis</h2>
+          <p class="lede">Configuration du CRM pour l'équipe commerciale et connexion avec l'ERP.</p>
+        </div>
+      </div>
+
+      <div class="uc-grid">
+        <div class="uc-mission">
+          <div class="uc-label">Périmètre de la mission</div>
+          <ul class="uc-bullets">
+            <li>Configuration de la pipeline commerciale</li>
+            <li>Mise en place du reporting</li>
+            <li>Connexion avec Docusign et automatisation du process de signature</li>
+            <li>Connexion avec l'ERP Sage X3</li>
+            <li>Actions d'acquisition</li>
+          </ul>
+        </div>
+
+        <div class="uc-side">
+          <div>
+            <div class="uc-label">Référence</div>
+            <div class="uc-ref">
+              <div class="uc-photo"><img src="../Asset/prez cvm/Yann cren.jpeg" alt="Yann Cren Bauer"></div>
+              <div>
+                <div class="uc-ref-name">Yann Cren Bauer</div>
+                <div class="uc-ref-meta">Mulhouse<br>Coordonnées sur demande</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="uc-label">Résultats</div>
+            <ul class="uc-bullets">
+              <li>Suivi en temps réel de l'activité commerciale</li>
+              <li>Amélioration de la conversion commerciale (entre 5 % et 15 %)</li>
+              <li>Suivi commercial et opérationnel centralisé</li>
+            </ul>
+          </div>
+          <div>
+            <div class="uc-label">Budget</div>
+            <div class="uc-budget-value">12 k€</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 9 — USE CASE 3 / 3 : TROUVER MON ARCHITECTE ============ -->
+  <section class="slide s-usecase">
+    <div class="slide-body">
+      <div class="uc-header">
+        <div class="uc-logo"><img src="../Asset/prez cvm/TMA.png" alt="Trouver Mon Architecte"></div>
+        <div>
+          <h2 class="slide-title">Trouver Mon Architecte</h2>
+          <p class="lede">Migration du CRM pour une équipe de 20 commerciaux.</p>
+        </div>
+      </div>
+
+      <div class="uc-grid">
+        <div class="uc-mission">
+          <div class="uc-label">Périmètre de la mission</div>
+          <ul class="uc-bullets">
+            <li>Mise en place de la pipeline commerciale</li>
+            <li>Configuration des workflows</li>
+            <li>Séquences d'acquisition</li>
+            <li>Lead nurturing</li>
+          </ul>
+        </div>
+
+        <div class="uc-side">
+          <div>
+            <div class="uc-label">Référence</div>
+            <div class="uc-ref">
+              <div class="uc-photo"><img src="../Asset/prez cvm/antoine.jpg" alt="Antoine Jouault"></div>
+              <div>
+                <div class="uc-ref-name">Antoine Jouault</div>
+                <div class="uc-ref-meta">Strasbourg<br>Coordonnées sur demande</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="uc-label">Résultats</div>
+            <ul class="uc-bullets">
+              <li>+4 000 emails de nurturing envoyés par mois</li>
+              <li>+17 % de conversion RDV à signature</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  (function () {
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    var counter = document.getElementById('slideCounter');
+    var downloadBtn = document.getElementById('downloadBtn');
+    var total = slides.length;
+    var index = 0;
+
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+    function show(target) {
+      if (target < 0 || target >= total) return;
+      slides[index].classList.remove('is-active');
+      index = target;
+      slides[index].classList.add('is-active');
+      counter.textContent = pad(index + 1) + ' / ' + pad(total);
+    }
+
+    // Init: show first slide
+    slides.forEach(function (s) { s.classList.remove('is-active'); });
+    slides[0].classList.add('is-active');
+    counter.textContent = pad(1) + ' / ' + pad(total);
+
+    // Block any wheel scroll (no slide change via scroll)
+    window.addEventListener('wheel', function (e) { e.preventDefault(); }, { passive: false });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function (e) {
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+      var k = e.key;
+      if (k === 'ArrowDown' || k === 'PageDown' || k === ' ' || k === 'ArrowRight') {
+        e.preventDefault(); show(index + 1);
+      } else if (k === 'ArrowUp' || k === 'PageUp' || k === 'ArrowLeft') {
+        e.preventDefault(); show(index - 1);
+      } else if (k === 'Home') {
+        e.preventDefault(); show(0);
+      } else if (k === 'End') {
+        e.preventDefault(); show(total - 1);
+      }
+    });
+
+    // Download: print to PDF (16:9 landscape via @media print)
+    downloadBtn.addEventListener('click', function () { window.print(); });
+  })();
+</script>
+</body>
+</html>
