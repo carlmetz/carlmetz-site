@@ -45,21 +45,21 @@
     position: relative;
   }
 
-  /* ============ SLIDE (absolute, crossfade, centered card) ============ */
+  /* ============ SLIDE (fixed 1280x720, scaled as a whole, crossfade) ============ */
   .slide {
     position: absolute;
-    top: 50%;
+    top: var(--slide-top, 50%);
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: min(94vw, calc(94vh * 16 / 9));
-    aspect-ratio: 16 / 9;
-    height: auto;
+    transform: translate(-50%, -50%) scale(var(--slide-scale, 1));
+    width: 1280px;
+    height: 720px;
     max-width: none;
+    container-type: size;
     background: #FEFCFA;
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.22);
     border-radius: 10px;
     overflow: hidden;
-    padding: clamp(36px, 4.4vh, 70px) clamp(48px, 5.2vw, 100px);
+    padding: 56px 84px;
     display: flex;
     flex-direction: column;
     opacity: 0;
@@ -193,7 +193,7 @@
   h1.slide-title {
     font-family: 'Lora', serif;
     font-weight: 600;
-    font-size: clamp(36px, 3.8vw, 56px);
+    font-size: clamp(36px, 3.8cqw, 56px);
     line-height: 1.08;
     letter-spacing: -0.025em;
     color: var(--ink);
@@ -202,7 +202,7 @@
   h2.slide-title {
     font-family: 'Lora', serif;
     font-weight: 600;
-    font-size: clamp(28px, 3vw, 46px);
+    font-size: clamp(28px, 3cqw, 46px);
     line-height: 1.12;
     letter-spacing: -0.015em;
     color: var(--ink);
@@ -210,11 +210,88 @@
   }
   .lede {
     font-family: 'DM Sans', sans-serif;
-    font-size: clamp(15px, 1.4vw, 21px);
+    font-size: clamp(17px, 1.6cqw, 23px);
     font-weight: 300;
     line-height: 1.55;
     color: var(--ink-soft);
     max-width: 60ch;
+  }
+
+  /* ============ SLIDE — CONTACT (clôture, centrée) ============ */
+  .s-outro {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+  .s-outro-body {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .s-outro .eyebrow { margin-bottom: 18px; }
+  .s-outro-title {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: 60px;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .s-outro-lede {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 19px;
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin-bottom: 44px;
+  }
+  .s-outro-coords {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px 30px;
+    margin-bottom: 44px;
+  }
+  .s-outro-coords a {
+    color: var(--ink);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 17px;
+    font-weight: 500;
+  }
+  .s-outro-coords a:hover { color: var(--warm); }
+  .s-outro-coords a svg {
+    width: 17px;
+    height: 17px;
+    color: var(--warm);
+    flex: 0 0 auto;
+  }
+  .s-outro-sign {
+    padding-top: 30px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .s-outro-name {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: 21px;
+    color: var(--ink);
+  }
+  .s-outro-role {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--warm);
   }
 
   /* ============ SLIDE 1 — INTRO (cover, centrée, épurée) ============ */
@@ -365,7 +442,7 @@
   .tl-title {
     font-family: 'Lora', serif;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 20px;
     color: var(--ink);
     margin-bottom: 6px;
     letter-spacing: -0.005em;
@@ -378,7 +455,7 @@
     margin-bottom: 10px;
   }
   .tl-item p {
-    font-size: 13px;
+    font-size: 14.5px;
     color: var(--ink-soft);
     line-height: 1.55;
   }
@@ -390,7 +467,7 @@
     gap: 5px;
   }
   .tl-bullets li {
-    font-size: 12.5px;
+    font-size: 14px;
     color: var(--ink-soft);
     line-height: 1.5;
     padding-left: 14px;
@@ -414,13 +491,13 @@
     flex: 1;
     gap: 28px;
   }
-  /* Automation: group cols + tools centered in remaining space */
+  /* Automation: group cols + tools, hugging the title */
   .auto-content {
     display: flex;
     flex-direction: column;
     flex: 1;
-    gap: clamp(28px, 3.4vh, 48px);
-    justify-content: center;
+    gap: clamp(28px, 3.4cqh, 48px);
+    justify-content: flex-start;
   }
   .presta-intro {
     display: grid;
@@ -439,10 +516,11 @@
   .presta-grid-4 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 26px 48px;
-    flex: 1;
-    align-content: center;
+    gap: 50px 48px;
+    align-content: start;
   }
+  /* Automation slide: title / columns / tools stacked with even 50px gaps */
+  .s-auto .slide-body { justify-content: flex-start; gap: 50px; }
   .presta-block {
     display: flex;
     flex-direction: column;
@@ -451,12 +529,12 @@
   .presta-block h4 {
     font-family: 'Lora', serif;
     font-weight: 600;
-    font-size: clamp(18px, 1.55vw, 24px);
+    font-size: clamp(20px, 1.75cqw, 26px);
     color: var(--ink);
     letter-spacing: -0.01em;
   }
   .presta-block p {
-    font-size: clamp(13px, 1.05vw, 16px);
+    font-size: clamp(14.5px, 1.22cqw, 18px);
     color: var(--ink-soft);
     line-height: 1.55;
     margin-bottom: 4px;
@@ -468,7 +546,7 @@
     gap: 6px;
   }
   .presta-block ul li {
-    font-size: clamp(12.5px, 0.95vw, 15px);
+    font-size: clamp(14px, 1.08cqw, 16.5px);
     color: var(--ink-soft);
     padding-left: 18px;
     position: relative;
@@ -506,20 +584,171 @@
   .tools-strip--inline .tools-strip-label {
     font-family: 'Lora', serif;
     font-weight: 600;
-    font-size: clamp(18px, 1.55vw, 24px);
+    font-size: clamp(18px, 1.55cqw, 24px);
     color: var(--ink);
     letter-spacing: -0.01em;
     text-transform: none;
-    margin-bottom: clamp(18px, 1.8vh, 28px);
+    margin-bottom: clamp(18px, 1.8cqh, 28px);
   }
   .tools-strip--inline .tools-row {
-    gap: clamp(20px, 2vw, 32px);
+    gap: clamp(20px, 2cqw, 32px);
     margin-bottom: 8px;
   }
   .tools-strip--inline .tools-row img {
-    height: clamp(22px, 2vh, 30px);
-    max-width: clamp(70px, 6vw, 100px);
+    height: clamp(22px, 2cqh, 30px);
+    max-width: clamp(70px, 6cqw, 100px);
   }
+
+  /* ============ SLIDE — TROIS EXPERTISES ============ */
+  .s-expertises { display: flex; flex-direction: column; }
+  .s-expertises .slide-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: clamp(24px, 3cqh, 44px);
+  }
+  .xp-wrap {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+  }
+  .xp-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(20px, 2.2cqw, 36px);
+  }
+  .xp-col {
+    background: #FBF5EC;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: clamp(26px, 3cqh, 44px) clamp(22px, 2.2cqw, 36px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .xp-col h3 {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: clamp(22px, 2.1cqw, 30px);
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    margin-bottom: clamp(12px, 1.4cqh, 18px);
+    line-height: 1.15;
+  }
+  .xp-col p {
+    font-size: clamp(15px, 1.25cqw, 18px);
+    color: var(--ink-soft);
+    line-height: 1.6;
+    max-width: 32ch;
+  }
+
+  /* ============ SLIDE — CYCLE DE VIE (cartographie gantt) ============ */
+  .s-lifecycle { display: flex; flex-direction: column; }
+  .s-lifecycle .slide-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: clamp(22px, 2.6cqh, 38px);
+  }
+  .lc-map-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 18px;
+  }
+  .lc-map { margin-top: 4px; }
+  /* phase header row */
+  .lc-phases {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: clamp(8px, 0.8cqw, 14px);
+  }
+  .lc-phase-h {
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: clamp(11px, 1cqw, 15px);
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    padding-bottom: clamp(8px, 0.9cqh, 12px);
+    border-bottom: 2px solid var(--warm);
+  }
+  .lc-phase-h span {
+    display: block;
+    font-size: clamp(9.5px, 0.78cqw, 11px);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 4px;
+  }
+  /* gantt grid of bars */
+  .lc-map {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: clamp(8px, 0.8cqw, 14px) clamp(8px, 0.8cqw, 14px);
+    grid-auto-rows: minmax(clamp(34px, 4cqh, 50px), auto);
+  }
+  .lc-bar {
+    border-radius: 9px;
+    border: 1px solid var(--line);
+    border-left-width: 4px;
+    background: #FEFCFA;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 2px;
+    padding: clamp(8px, 1cqh, 13px) clamp(10px, 1.1cqw, 16px);
+    line-height: 1.25;
+  }
+  .lc-bar strong {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: clamp(13px, 1.05cqw, 16px);
+    color: var(--ink);
+  }
+  .lc-bar small {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(10.5px, 0.85cqw, 12.5px);
+    font-weight: 400;
+    color: var(--ink-mute);
+  }
+  /* category colours */
+  .lc-bar--crm   { border-left-color: #7a6a52; background: #FBF5EC; }
+  .lc-bar--ia    { border-left-color: #b8472a; background: #FBF1EC; }
+  .lc-bar--auto  { border-left-color: #5f7184; background: #EEF1F4; }
+  .lc-bar--pilot { border-left-color: #3a3a3e; background: #F1EFEC; }
+  /* legend */
+  .lc-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(16px, 1.8cqw, 30px);
+  }
+  .lc-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(11px, 0.9cqw, 13.5px);
+    color: var(--ink-soft);
+  }
+  .lc-legend span::before {
+    content: "";
+    width: 11px;
+    height: 11px;
+    border-radius: 3px;
+    background: var(--dot, var(--warm));
+  }
+  .lc-legend .lg-crm::before   { background: #7a6a52; }
+  .lc-legend .lg-ia::before    { background: #b8472a; }
+  .lc-legend .lg-auto::before  { background: #5f7184; }
+  .lc-legend .lg-pilot::before { background: #3a3a3e; }
 
   /* ============ SLIDE — MÉTHODE ET TARIFICATION ============ */
   .s-method { display: flex; flex-direction: column; }
@@ -527,7 +756,7 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    gap: 30px;
+    gap: 34px;
     justify-content: space-between;
   }
   .method-grid {
@@ -536,7 +765,7 @@
     gap: 0;
   }
   .method-step {
-    padding: 0 clamp(24px, 2.6vw, 44px);
+    padding: 0 clamp(24px, 2.6cqw, 44px);
     border-left: 1px solid var(--line);
   }
   .method-step:first-child { padding-left: 0; border-left: none; }
@@ -545,7 +774,7 @@
     display: block;
     font-family: 'Lora', serif;
     font-weight: 600;
-    font-size: clamp(28px, 2.6vw, 40px);
+    font-size: clamp(28px, 2.6cqw, 40px);
     color: var(--warm);
     letter-spacing: -0.01em;
     margin-bottom: 20px;
@@ -554,53 +783,59 @@
   .method-step h4 {
     font-family: 'Lora', serif;
     font-weight: 600;
-    font-size: clamp(20px, 1.8vw, 28px);
+    font-size: clamp(22px, 2cqw, 30px);
     color: var(--ink);
     margin-bottom: 14px;
     letter-spacing: -0.01em;
   }
   .method-step p {
-    font-size: clamp(13.5px, 1.1vw, 17px);
+    font-size: clamp(15px, 1.25cqw, 18px);
     color: var(--ink-soft);
     line-height: 1.6;
   }
-  /* Pricing boxes */
+  /* Pricing boxes — large, centered */
   .pricing-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: clamp(18px, 1.6vw, 28px);
+    gap: 32px;
+    width: 100%;
+    max-width: 940px;
+    margin: 0 auto;
   }
   .pricing-box {
     background: #FBF5EC;
     border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: clamp(20px, 2vh, 30px) clamp(24px, 2.4vw, 36px);
+    border-radius: 14px;
+    padding: 40px 44px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
   }
   .pricing-box h4 {
     font-family: 'Lora', serif;
     font-weight: 600;
-    font-size: clamp(19px, 1.7vw, 24px);
+    font-size: 28px;
     color: var(--ink);
     letter-spacing: -0.01em;
   }
   .pricing-box p {
-    font-size: clamp(13.5px, 1.05vw, 16px);
+    font-size: 16px;
     color: var(--ink-soft);
     line-height: 1.55;
+    max-width: 34ch;
   }
   .pricing-box .pb-price {
-    margin-top: 6px;
+    margin-top: 4px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 600;
-    font-size: clamp(17px, 1.4vw, 22px);
+    font-size: 24px;
     color: var(--ink);
   }
   .pricing-box .pb-price span {
     font-weight: 400;
-    font-size: clamp(13px, 1.05vw, 16px);
+    font-size: 16px;
     color: var(--ink-mute);
     margin-left: 4px;
   }
@@ -611,20 +846,20 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    gap: 30px;
-    justify-content: space-between;
+    gap: 34px;
+    justify-content: flex-start;
   }
-  .uc-header { display: flex; align-items: center; gap: clamp(22px, 2.2vw, 36px); }
+  .uc-header { display: flex; align-items: center; gap: clamp(22px, 2.2cqw, 36px); }
   .uc-logo {
-    height: clamp(38px, 3.4vw, 58px);
+    height: clamp(38px, 3.4cqw, 58px);
     display: flex;
     align-items: center;
     flex-shrink: 0;
   }
   .uc-logo img { height: 100%; width: auto; object-fit: contain; display: block; }
   .uc-logo--placeholder {
-    height: clamp(54px, 4.4vw, 76px);
-    min-width: clamp(80px, 7vw, 120px);
+    height: clamp(54px, 4.4cqw, 76px);
+    min-width: clamp(80px, 7cqw, 120px);
     padding: 0 16px;
     background: var(--cream);
     border: 1px solid var(--line);
@@ -643,29 +878,29 @@
   .uc-grid {
     display: grid;
     grid-template-columns: 1.6fr 1fr;
-    gap: clamp(36px, 4vw, 70px);
+    gap: clamp(36px, 4cqw, 70px);
     align-items: start;
     flex: 1;
   }
   .uc-label {
     font-family: 'DM Sans', sans-serif;
-    font-size: clamp(10.5px, 0.85vw, 12px);
+    font-size: clamp(11px, 0.9cqw, 13px);
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--ink-mute);
-    margin-bottom: clamp(12px, 1.4vh, 20px);
+    margin-bottom: clamp(12px, 1.4cqh, 20px);
   }
   .uc-bullets {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: clamp(8px, 0.9vh, 14px);
+    gap: clamp(8px, 0.9cqh, 14px);
   }
   .uc-bullets li {
-    font-size: clamp(13.5px, 1.1vw, 17px);
+    font-size: clamp(15px, 1.25cqw, 18px);
     color: var(--ink-soft);
-    padding-left: 22px;
+    padding-left: 16px;
     position: relative;
     line-height: 1.5;
   }
@@ -673,28 +908,59 @@
     content: "";
     position: absolute;
     left: 0;
-    top: 0.7em;
-    width: 12px;
-    height: 1px;
+    top: 0.62em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
     background: var(--warm);
+  }
+  /* tools block — inside the mission column, under the scope list */
+  .uc-tools {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+  .uc-tools-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(11px, 0.9cqw, 13px);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 16px;
+  }
+  .uc-tools-logos {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 22px 26px;
+  }
+  .uc-tools-logos img {
+    height: 23px;
+    max-width: 88px;
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.82;
+    mix-blend-mode: multiply;
   }
   .uc-side {
     display: flex;
     flex-direction: column;
-    gap: clamp(26px, 3vh, 42px);
+    gap: clamp(26px, 3cqh, 42px);
   }
   .uc-budget-value {
     font-family: 'Lora', serif;
     font-weight: 600;
-    font-size: clamp(30px, 2.8vw, 44px);
+    font-size: clamp(30px, 2.8cqw, 44px);
     color: var(--ink);
     letter-spacing: -0.015em;
     line-height: 1;
   }
-  .uc-ref { display: flex; align-items: center; gap: clamp(16px, 1.5vw, 22px); }
+  .uc-ref { display: flex; align-items: center; gap: clamp(16px, 1.5cqw, 22px); }
   .uc-photo {
-    width: clamp(64px, 5vw, 84px);
-    height: clamp(64px, 5vw, 84px);
+    width: clamp(64px, 5cqw, 84px);
+    height: clamp(64px, 5cqw, 84px);
     border-radius: 50%;
     background: var(--cream);
     border: 1px solid var(--line);
@@ -705,20 +971,20 @@
     justify-content: center;
     font-family: 'Lora', serif;
     font-weight: 600;
-    font-size: clamp(18px, 1.6vw, 24px);
+    font-size: clamp(18px, 1.6cqw, 24px);
     color: var(--ink-mute);
   }
   .uc-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .uc-ref-name {
     font-family: 'Lora', serif;
     font-weight: 600;
-    font-size: clamp(17px, 1.4vw, 22px);
+    font-size: clamp(17px, 1.4cqw, 22px);
     color: var(--ink);
     margin-bottom: 4px;
     letter-spacing: -0.005em;
   }
   .uc-ref-meta {
-    font-size: clamp(12.5px, 1vw, 15px);
+    font-size: clamp(12.5px, 1cqw, 15px);
     color: var(--ink-soft);
     line-height: 1.45;
   }
@@ -738,25 +1004,9 @@
     mix-blend-mode: multiply;
   }
 
-  /* ============ RESPONSIVE — display ============ */
-  @media (max-width: 1340px) {
-    .slide { transform-origin: top center; }
-  }
-  @media (max-width: 900px) {
-    .deck { padding: 16px 12px 60px; gap: 16px; }
-    .slide {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 9;
-      padding: 28px 32px;
-    }
-    .s-intro h1 { font-size: clamp(28px, 6vw, 56px); }
-    h1.slide-title { font-size: clamp(26px, 5vw, 44px); }
-    .s-bio-grid { grid-template-columns: 200px 1fr; gap: 30px; }
-    .s-bio-photo { width: 200px; height: 200px; }
-    .s-bio-quote { font-size: clamp(20px, 3vw, 32px); }
-    .tl-track { grid-template-columns: repeat(2, 1fr); }
-  }
+  /* The slide is a fixed 1280x720 stage scaled as a single unit via
+     --slide-scale (set in JS). No per-element responsive rules — a
+     presentation must look identical at every size, just smaller. */
 
   /* ============ PRINT (16:9 landscape, one slide per page) ============ */
   @media print {
@@ -775,14 +1025,14 @@
     .slide {
       position: static;
       inset: auto;
+      transform: none !important;
       width: 13.333in;
       height: 7.5in;
       max-width: none;
-      aspect-ratio: auto;
       box-shadow: none;
       border-radius: 0;
       page-break-after: always;
-      padding: 0.7in 0.85in;
+      padding: 0.58in 0.875in;
       visibility: visible !important;
       opacity: 1 !important;
       pointer-events: auto !important;
@@ -800,10 +1050,10 @@
     <span class="pi-num" id="slideCounter">— / —</span>
     <span class="pi-hint">← → ou Espace pour naviguer</span>
   </div>
-  <button class="floating-download" id="downloadBtn" type="button">
+  <a class="floating-download" id="downloadBtn" href="Carl-Metz-Proposition.pdf" download="Carl Metz - Proposition.pdf">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     Télécharger
-  </button>
+  </a>
 </div>
 
 <main class="deck">
@@ -852,7 +1102,7 @@
         </div>
         <div class="tl-item">
           <div class="tl-date">2021 — 2023</div>
-          <div class="tl-title">Responsable marketing</div>
+          <div class="tl-title">Marketing manager</div>
           <div class="tl-subtitle">Kaliz</div>
           <ul class="tl-bullets">
             <li>Pilotage d'une équipe de 4 personnes</li>
@@ -872,8 +1122,35 @@
             <li>Déployé à Nice, Paris et Strasbourg</li>
             <li>Expert HubSpot</li>
             <li>Automatisation</li>
-            <li>IA</li>
+            <li>Agent IA</li>
           </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE — TROIS EXPERTISES ============ -->
+  <section class="slide s-expertises">
+    <div class="slide-body">
+      <div>
+        <h2 class="slide-title">Trois expertises, un même objectif de croissance</h2>
+        <p class="lede">J'interviens sur trois leviers complémentaires, du socle CRM jusqu'aux agents IA qui travaillent à votre place.</p>
+      </div>
+
+      <div class="xp-wrap">
+        <div class="xp-grid">
+          <div class="xp-col">
+            <h3>Accompagnement CRM</h3>
+            <p>J'intègre, structure et développe votre CRM HubSpot pour en faire le référentiel unique de votre activité commerciale.</p>
+          </div>
+          <div class="xp-col">
+            <h3>Automatisation</h3>
+            <p>Je connecte votre stack et supprime les tâches répétitives pour libérer vos équipes des opérations à faible valeur.</p>
+          </div>
+          <div class="xp-col">
+            <h3>Agents IA</h3>
+            <p>Je développe des agents IA intégrés à votre CRM qui exécutent vos tâches commerciales en continu, sans recruter.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -899,7 +1176,7 @@
         </div>
         <div class="presta-block">
           <h4>Développement CRM avancé</h4>
-          <p>Je développe HubSpot sur-mesure pour qu'il épouse votre fonctionnement, là où le standard ne suffit pas.</p>
+          <p>Je développe HubSpot sur-mesure pour qu'il s'adapte à votre fonctionnement, là où le standard ne suffit pas.</p>
           <ul>
             <li>Objets et propriétés personnalisés</li>
             <li>Intégrations API et workflows multi-conditions</li>
@@ -929,15 +1206,14 @@
   </section>
 
   <!-- ============ SLIDE 5 — AUTOMATION ============ -->
-  <section class="slide s-presta">
+  <section class="slide s-presta s-auto">
     <div class="slide-body">
       <div>
         <h2 class="slide-title">Connectez vos outils, automatisez vos process</h2>
         <p class="lede">Je connecte votre stack, je supprime les tâches répétitives et je libère vos équipes pour qu'elles se concentrent sur la création de valeur.</p>
       </div>
 
-      <div class="auto-content">
-      <div class="presta-grid-4" style="grid-template-columns: repeat(3, 1fr); align-content: start; flex: 0 0 auto;">
+      <div class="presta-grid-4" style="grid-template-columns: repeat(3, 1fr); align-content: start;">
         <div class="presta-block">
           <h4>Connexion de vos outils</h4>
           <p>J'intègre votre stack via flux no-code (n8n, Make) ou API pour que vos logiciels échangent en temps réel.</p>
@@ -968,7 +1244,45 @@
           <img src="../Asset/Tools/Wrike.png" alt="Wrike">
         </div>
       </div>
-      </div><!-- /.auto-content -->
+    </div>
+  </section>
+
+  <!-- ============ SLIDE — CYCLE DE VIE (cartographie) ============ -->
+  <section class="slide s-lifecycle">
+    <div class="slide-body">
+      <div>
+        <h2 class="slide-title">Un accompagnement sur tout le cycle de vie</h2>
+        <p class="lede">Du premier contact jusqu'à la fidélisation, j'outille chaque étape de la relation prospect et client avec la bonne technologie.</p>
+      </div>
+
+      <div class="lc-map-wrap">
+        <div class="lc-phases">
+          <div class="lc-phase-h"><span>Phase 1</span>Acquisition</div>
+          <div class="lc-phase-h"><span>Phase 2</span>Qualification</div>
+          <div class="lc-phase-h"><span>Phase 3</span>Conversion</div>
+          <div class="lc-phase-h"><span>Phase 4</span>Activation</div>
+          <div class="lc-phase-h"><span>Phase 5</span>Fidélisation</div>
+        </div>
+
+        <div class="lc-map">
+          <!-- Lane 1 : HubSpot (Marketing / Sales / Service hubs) -->
+          <div class="lc-bar lc-bar--crm" style="grid-column: 1 / 2; grid-row: 1;"><strong>HubSpot</strong><small>Marketing Hub</small></div>
+          <div class="lc-bar lc-bar--crm" style="grid-column: 2 / 4; grid-row: 1;"><strong>HubSpot</strong><small>Sales Hub</small></div>
+          <div class="lc-bar lc-bar--crm" style="grid-column: 4 / 6; grid-row: 1;"><strong>HubSpot</strong><small>Service Hub</small></div>
+
+          <!-- Lane 2 : Agents IA -->
+          <div class="lc-bar lc-bar--ia" style="grid-column: 1 / 2; grid-row: 2;"><strong>Agent IA</strong><small>Prospection &amp; enrichissement</small></div>
+          <div class="lc-bar lc-bar--ia" style="grid-column: 2 / 3; grid-row: 2;"><strong>Agent IA</strong><small>Qualification inbound</small></div>
+          <div class="lc-bar lc-bar--ia" style="grid-column: 3 / 5; grid-row: 2;"><strong>Agent IA</strong><small>Analyse de pipeline</small></div>
+
+          <!-- Lane 3 : Automatisation -->
+          <div class="lc-bar lc-bar--auto" style="grid-column: 2 / 4; grid-row: 3;"><strong>Automatisation</strong><small>Workflows &amp; relances</small></div>
+          <div class="lc-bar lc-bar--auto" style="grid-column: 4 / 6; grid-row: 3;"><strong>Automatisation</strong><small>Connexion des outils</small></div>
+
+          <!-- Lane 4 : Pilotage (transversal) -->
+          <div class="lc-bar lc-bar--pilot" style="grid-column: 1 / 6; grid-row: 4;"><strong>Pilotage</strong><small>Reporting &amp; tableaux de bord sur tout le cycle</small></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -980,33 +1294,33 @@
         <p class="lede">Un accompagnement structuré, du diagnostic au suivi continu, avec deux modèles de tarification adaptés à votre besoin.</p>
       </div>
 
-      <div class="method-grid">
-        <div class="method-step">
-          <span class="ms-num">01</span>
-          <h4>Audit</h4>
-          <p>De l'analyse du challenge ou du besoin à l'audit d'un service, voire de l'entreprise entière. Je pose un diagnostic clair avant de cadrer la mission.</p>
-        </div>
-        <div class="method-step">
-          <span class="ms-num">02</span>
-          <h4>Lancement et sprints</h4>
-          <p>Mission lancée puis découpée en sprints courts. Chaque milestone livre un point précis, validé avec vous au fil de l'avancement.</p>
-        </div>
-        <div class="method-step">
-          <span class="ms-num">03</span>
-          <h4>Maintenance et suivi</h4>
-          <p>Une fois la mission livrée, je reste en support pour faire évoluer vos outils au rythme de votre activité.</p>
-        </div>
-      </div>
-
       <div class="pricing-row">
         <div class="pricing-box">
           <h4>À la mission</h4>
-          <p>Forfait calé sur un périmètre, des livrables et des délais définis ensemble en début de mission.</p>
+          <p>Un forfait défini ensemble en début de mission : périmètre, livrables et délais établis avec précision.</p>
         </div>
         <div class="pricing-box">
           <h4>Au réel</h4>
           <p>Temps facturé à la journée, avec un tarif dégressif selon le volume engagé.</p>
           <div class="pb-price">700 € <span>/ jour, dégressif</span></div>
+        </div>
+      </div>
+
+      <div class="method-grid">
+        <div class="method-step">
+          <span class="ms-num">01</span>
+          <h4>Audit</h4>
+          <p>De l'analyse de votre besoin à l'audit complet d'un service ou de l'entreprise. J'établis un diagnostic clair avant de définir le cadre de la mission.</p>
+        </div>
+        <div class="method-step">
+          <span class="ms-num">02</span>
+          <h4>Lancement et sprints</h4>
+          <p>La mission est découpée en sprints courts. Chaque étape livre un résultat précis, validé avec vous au fil de l'avancement.</p>
+        </div>
+        <div class="method-step">
+          <span class="ms-num">03</span>
+          <h4>Maintenance et suivi</h4>
+          <p>Une fois la mission livrée, je reste à vos côtés pour faire évoluer vos outils au rythme de votre activité.</p>
         </div>
       </div>
     </div>
@@ -1035,6 +1349,17 @@
             <li>Actions d'acquisition</li>
             <li>Mise en place de flux de données entre le CRM, Wrike, l'outil de facturation et Notion</li>
           </ul>
+
+          <div class="uc-tools">
+            <div class="uc-tools-label">Outils utilisés</div>
+            <div class="uc-tools-logos">
+              <img src="../Asset/Tools/Hubspot.png" alt="HubSpot">
+              <img src="../Asset/Tools/Notion.png" alt="Notion">
+              <img src="../Asset/Tools/Wrike.png" alt="Wrike">
+              <img src="../Asset/Tools/Make.png" alt="Make">
+              <img src="../Asset/Tools/Pennylane.png" alt="Pennylane">
+            </div>
+          </div>
         </div>
 
         <div class="uc-side">
@@ -1087,6 +1412,15 @@
             <li>Connexion avec l'ERP Sage X3</li>
             <li>Actions d'acquisition</li>
           </ul>
+
+          <div class="uc-tools">
+            <div class="uc-tools-label">Outils utilisés</div>
+            <div class="uc-tools-logos">
+              <img src="../Asset/Tools/Hubspot.png" alt="HubSpot">
+              <img src="../Asset/Tools/N8N.png" alt="n8n">
+              <img src="../Asset/Tools/docusign-logo.png" alt="DocuSign">
+            </div>
+          </div>
         </div>
 
         <div class="uc-side">
@@ -1137,6 +1471,13 @@
             <li>Séquences d'acquisition</li>
             <li>Lead nurturing</li>
           </ul>
+
+          <div class="uc-tools">
+            <div class="uc-tools-label">Outils utilisés</div>
+            <div class="uc-tools-logos">
+              <img src="../Asset/Tools/Hubspot.png" alt="HubSpot">
+            </div>
+          </div>
         </div>
 
         <div class="uc-side">
@@ -1157,7 +1498,32 @@
               <li>+17 % de conversion RDV à signature</li>
             </ul>
           </div>
+          <div>
+            <div class="uc-label">Budget</div>
+            <div class="uc-budget-value">8 k€</div>
+          </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE — CONTACT (clôture) ============ -->
+  <section class="slide s-outro">
+    <div class="s-outro-body">
+      <span class="eyebrow">Parlons de votre projet</span>
+      <h2 class="s-outro-title">Contactez-moi</h2>
+      <p class="s-outro-lede">Je vous propose un échange de 30 minutes pour faire connaissance et comprendre votre projet.</p>
+
+      <div class="s-outro-coords">
+        <a href="mailto:hello@carlmetz.fr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg> hello@carlmetz.fr</a>
+        <a href="tel:+33626383766"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 06 26 38 37 66</a>
+        <a href="https://carlmetz.fr" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> carlmetz.fr</a>
+        <a href="https://www.linkedin.com/in/carl-metz" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> linkedin.com/in/carl-metz</a>
+      </div>
+
+      <div class="s-outro-sign">
+        <div class="s-outro-name">Carl Metz</div>
+        <div class="s-outro-role">Consultant CRM &nbsp;|&nbsp; Automatisation &nbsp;|&nbsp; IA</div>
       </div>
     </div>
   </section>
@@ -1173,6 +1539,31 @@
     var index = 0;
 
     function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+    // Scale the whole 1280x720 slide to fit the viewport (presentation mode:
+    // everything inside stays fixed, the slide scales as one block).
+    // Reserve a band at the bottom for the toolbar and keep a constant gap.
+    var BASE_W = 1280, BASE_H = 720;
+    var TOP_PAD = 26, BOTTOM_BAND = 72, TOOLBAR_GAP = 16;
+    var toolbar = document.querySelector('.floating-toolbar');
+    function fitScale() {
+      var vw = window.innerWidth, vh = window.innerHeight;
+      var availW = vw - 52;
+      var availH = vh - TOP_PAD - BOTTOM_BAND;
+      var scale = Math.min(availW / BASE_W, availH / BASE_H);
+      document.documentElement.style.setProperty('--slide-scale', scale.toFixed(4));
+      // centre the slide in the region [TOP_PAD, vh - BOTTOM_BAND]
+      var centerY = (TOP_PAD + (vh - BOTTOM_BAND)) / 2;
+      document.documentElement.style.setProperty('--slide-top', centerY + 'px');
+      // park the toolbar a constant gap under the slide's bottom edge
+      if (toolbar) {
+        var slideBottom = centerY + (BASE_H * scale) / 2;
+        toolbar.style.top = Math.round(slideBottom + TOOLBAR_GAP) + 'px';
+        toolbar.style.bottom = 'auto';
+      }
+    }
+    fitScale();
+    window.addEventListener('resize', fitScale);
 
     function show(target) {
       if (target < 0 || target >= total) return;
@@ -1206,7 +1597,7 @@
     });
 
     // Download: print to PDF (16:9 landscape via @media print)
-    downloadBtn.addEventListener('click', function () { window.print(); });
+    // Download button is a direct link to the pre-generated PDF (no print dialog).
   })();
 </script>
 </body>
